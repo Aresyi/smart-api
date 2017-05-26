@@ -8,7 +8,7 @@
 <script type="text/javascript" src="/smart-api/assets/dataDesc.js"></script>
 
 <body>
-    <div id="page-loading-mask"></div>
+    <!-- <div id="page-loading-mask"></div>  -->
 
     <div class="wrapper">
         
