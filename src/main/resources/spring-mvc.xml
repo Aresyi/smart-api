@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:component-scan base-package="com.ydj.smart.api.*"/> 
+    
+    <mvc:annotation-driven/>
+    
+    <!-- 默认的资源拦截处理 -->
+	<mvc:default-servlet-handler/>
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+    	<property name="maxUploadSize" value="10485760" />  
+	</bean>
+	
+	<!-- 视图解析器策略 和 视图解析器 -->  
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	<!-- VelocityEngine -->
+	<bean
+        id="velocityEngine"
+        class="org.springframework.ui.velocity.VelocityEngineFactoryBean" >
+        <property name="velocityProperties" >
+            <props>
+                <prop key="resource.loader" >class</prop>
+                <prop key="class.resource.loader.class" >
+					org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+                </prop>
+                <prop key="velocimacro.library" />
+                <prop key="input.encoding" >UTF-8</prop>
+                <prop key="output.encoding" >UTF-8</prop>
+            </props>
+        </property>
+    </bean>
+	
+	<!-- 拦截器 -->
+	<mvc:interceptors>
+		<bean class="com.ydj.smart.api.web.CommonInterceptor" >
+			<property name="excludedUrls"><!-- 要排除资源文件 -->
+				<list>
+					<value>/go/apply</value>
+					<value>/apply/submit</value>
+					<value>/go/applySuccess</value>
+					<value>/assets</value>
+					<value>/htdocs</value>
+					<value>index/login</value>
+					<value>index/signIn</value>
+					<value>index/signOut</value>
+					<value>/go/404</value>
+				</list>
+			</property>
+		</bean>  
+	</mvc:interceptors>
+	
+</beans>

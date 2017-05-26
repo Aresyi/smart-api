@@ -1,0 +1,25 @@
+    #foreach($one in $notifyList)
+                	 <div data-notification-guid="$!one.id" data-topic-guid="$!one.id" class="notice unread" data-created-at="$!one.createTime" data-key-id="$!one.id" >
+					    <a class="link" 
+					    	#if($one.type == 0)	
+		   						href="/smart-api/message/$one.targetId/messageDetail?notify=$one.id#$one.commentId"
+		   					#elseif($one.type == 1)
+		   						href="/smart-api/api/$one.targetId/apiDetail?notify=$one.id#$one.commentId"
+		   					#else
+		   						href="javaScript:void();"
+		   					#end		
+					        data-stack-root data-parent-name="全部通知" data-parent-url="/teams/$!one.id/notifications/">
+					        <span class="title">
+					            <span class="actor member">$!one.actorMember</span>
+					            <span class="action">$!one.action</span>
+					            <span class="target">$!one.target</span>
+					        </span>
+					            <span class="content">
+					                 $!one.content
+					            </span>
+					    </a>
+					    <div class="date" data-readable-time="$!one.createTime"></div>
+					    <a class="mark-read" href="/teams/2c17c1fc24584c0497dd0a6ac8a3ed18/notifications/$!one.id/read"
+					        title="标记为已读" data-remote="true" data-method="post" data-loading><i class="twr twr-check"></i></a>
+					</div>
+    #end

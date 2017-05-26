@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-jsptaglibrary_2_0.xsd"
+	version="2.0">
+	<tlib-version>1.0</tlib-version>
+	<short-name>tranb</short-name>
+	<uri>http://com.tranb/jsp/taglib/tranb-ocr.tld</uri>
+	<tag-file>
+		<name>pagination</name>
+		<path>/WEB-INF/tags/pagination.tag</path>
+	</tag-file>
+	<function>
+		<name>longToDateString</name>
+		<function-class>com.tranb.ocr.utils.TagUtils</function-class>
+		<function-signature>
+			java.lang.String longToDateString(java.lang.Long)
+		</function-signature>
+	</function>
+	<function>
+		<name>longToDateString4Format</name>
+		<function-class>com.tranb.ocr.utils.TagUtils</function-class>
+		<function-signature>
+			java.lang.String longToDateString(java.lang.Long,java.lang.String)
+		</function-signature>
+	</function>
+	<function>
+		<name>fomatDecimal</name>
+		<function-class>com.tranb.ocr.utils.TagUtils</function-class>
+		<function-signature>
+			java.lang.String fomatDecimal(java.lang.Double)
+		</function-signature>
+	</function>
+	<function>
+		<name>fomatDecimal2</name>
+		<function-class>com.tranb.ocr.utils.TagUtils</function-class>
+		<function-signature>
+			java.lang.String fomatDecimal(java.lang.Integer,java.lang.Integer)
+		</function-signature>
+	</function>
+	<function>
+		<name>getRandomNumber</name>
+		<function-class>com.tranb.ocr.utils.TagUtils</function-class>
+		<function-signature>
+			java.lang.Integer getRandomNumber(java.lang.Integer,java.lang.Integer)
+		</function-signature>
+	</function>
+</taglib>

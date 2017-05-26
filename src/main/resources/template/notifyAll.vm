@@ -1,0 +1,47 @@
+#if($isFirest == true)
+		<div class="page-inner" id="page-notifications" data-page-name="全部通知">
+			<div class="page-title">
+				<h3>全部通知</h3>
+			</div>
+
+			<div class="notifications">
+#end
+
+#foreach($one in $notifyList)
+   <div data-notification-guid="$one.id"
+		data-topic-guid="$one.id" class="notice"
+		data-created-at="$one.createTime"
+		data-key-id="$one.id">
+
+		<a class="member-avatar"
+		   href="/members/$one.user.id" target="_blank">
+		   <img class="avatar" src="/smart-api/assets/default_avatars/$one.user.avatar" />
+	    </a> 
+	    <a class="link"
+	       #if($one.type == 0)	
+		   		href="/smart-api/message/$one.targetId/messageDetail?notify=$one.id#$one.commentId"
+		   #elseif($one.type == 1)
+		   		href="/smart-api/api/$one.targetId/apiDetail?notify=$one.id#$one.commentId"
+		   #else
+		   		href="javaScript:void();"
+		   #end				
+		   >		 
+		   <span class="title"> 
+		   		<span class="actor member">$one.user.name</span> 
+		   		<span class="action">$one.action</span>
+				<span class="target">
+					<span class="-rest">$one.target</span>
+				</span>	
+			</span> 
+			<span class="content">$one.content</span>
+		</a> 
+		<span class="date" data-readable-time="$one.createTime"></span>
+	</div>      
+#end
+
+#if($isFirest == true)
+</div>
+
+			<a href="javascript:;" id="btn-load-more">加载更多内容</a>
+		</div>
+#end

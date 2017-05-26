@@ -1,0 +1,36 @@
+<div class="comment" id="$!obj.id" data-creator-guid="$!obj.user.groupId">
+	<a class="avatar-wrap" href="/members/$!obj.userId/" target="_blank"> 
+		<img class="avatar" src="/smart-api/assets/default_avatars/$!obj.user.avatar" width="50" height="50" />
+	</a>
+	
+	<div class="comment-actions ">
+		<div class="actions">
+			<a href="javascript:;" class="reply"> 
+				<i class="twr twr-reply"></i>
+			</a> 
+		    <a href="/comments/$!obj.id/like" class="like" data-remote="true" data-loading="true" data-method="post"> 
+				<i class="twr twr-thumbs-o-up"></i> 
+				<span class="count"></span>
+			</a> 
+			<a href="javascript:;" class="more" data-visible-to="creator,admin"> 
+				<i class="twr twr-bars"></i>
+			</a>
+		</div>
+	</div>
+	
+	<div class="comment-main">
+		<div class="info">
+			<a class="author" href="/members/$!obj.userId/" data-stack data-stack-root>$!obj.creater</a> 
+			<a class="create-time" href="#$!obj.id" title="$!obj.createTime" data-readable-time="$!obj.createTime"></a>
+		</div>
+	
+		<div class="comment-content editor-style">
+			$!obj.content
+		</div>
+	</div>
+	
+	<div class="tpl-comment-actions-menu">
+		<a href="/comments/$!obj.id/edit" class="edit" data-visible-to="creator" data-remote="true" data-loading="true" data-method="get"> 编辑 </a> 
+		<a href="/comments/$!obj.id/destroy" class="del" data-visible-to="creator,admin" data-remote="true" data-method="post" data-confirm="确定要删除这条回复吗？"> 删除 </a>
+	</div>
+</div>

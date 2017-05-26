@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"
+       default-autowire="byName">
+       
+    <bean id="sysProps"
+      class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+      <property name="targetClass" value="java.lang.System" />
+      <property name="targetMethod" value="getProperties" />
+    </bean>
+  
+    <bean id="sysMongo" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+      <property name="targetObject" ref="sysProps"/>
+      <property name="targetMethod" value="setProperty"/>
+      <property name="arguments">
+          <list>
+                <value>DEBUG.MONGO</value>
+                <value>true</value>
+          </list>
+      </property>
+  	</bean>
+
+   <bean id="sysDbTrace" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+      <property name="targetObject" ref="sysProps"/>
+      <property name="targetMethod" value="setProperty"/>
+      <property name="arguments">
+          <list>
+                <value>DB.TRACE</value>
+                <value>true</value>
+          </list>
+      </property>
+    </bean>    
+
+    <bean id="mongo" class="com.mongodb.Mongo">
+        <constructor-arg  index="0" type="String" value="${db.mongo.host}"/> 
+        <constructor-arg  index="1" type="int" value="${db.mongo.port}"/>
+    </bean>
+
+    <bean id="mongoDB" class="com.ydj.smart.common.nosql.MongoDBFactory">
+    	<property name="autoConnectRetry" value="true"/>
+        <property name="connectTimeout" value="180000"/>
+        <property name="maxWaitTime" value="60000"/>
+        <property name="maxAutoConnectRetryTime" value="25000"/>
+        <property name="socketKeepAlive" value="true"/>
+        <property name="socketTimeout" value="180000"/>
+    
+        <property name="mongo" ref="mongo"/>
+        <property name="name" value="${db.mongo.dbName}"/>
+    </bean>
+    
+</beans>
