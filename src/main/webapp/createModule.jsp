@@ -5,7 +5,7 @@
 <%@ include file="/inc-common.jsp" %>
 
 <body>
-    <div id="page-loading-mask"></div>
+    <!--<div id="page-loading-mask"></div>  -->
 
     <div class="wrapper">
         
