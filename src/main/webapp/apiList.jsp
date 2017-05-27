@@ -208,7 +208,7 @@
 							</td>
 							
 							<td>
-								<c:if test="${empty obj.isDel && (cookie.isEdite.value eq 1 || obj.createUserId eq cookie.id.value)}">
+								<c:if test="${empty obj.isDel && (cookie.roleId.value eq 8686 || cookie.isEdite.value eq 1 || obj.createUserId eq cookie.id.value)}">
 									<a href="/smart-api/api/${obj.id }/toEditeAPI/">修改</a>
 									<a href="javaScript:void(0);" onclick="del(this,'${obj.id}');">废弃</a>
 								</c:if>
