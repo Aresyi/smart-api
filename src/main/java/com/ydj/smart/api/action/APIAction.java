@@ -825,7 +825,7 @@ public class APIAction extends BaseAction {
 		String href = Constant.WEB_ROOT +  "api/"+id+"/apiDetail/" ;
 		
 		String opreater = this.getUser(request,response);
-		this.sysDao.saveSysLog(opreater, "调试["+one.getString("belongItem")+"->"+one.getString("belongModule")+"->"+one.getString("name")+"]接口  ",href);
+		this.sysDao.saveSysLog(companyId,opreater, "调试["+one.getString("belongItem")+"->"+one.getString("belongModule")+"->"+one.getString("name")+"]接口  ",href);
 		
 		JSONObject confInf = sysConfDao.findBasicInfo4ItemId(companyId,one.getString("belongItemId"));
 		
