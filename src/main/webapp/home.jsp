@@ -78,7 +78,7 @@
 									 <a class="project c${tranb:getRandomNumber(1,9) } i${tranb:getRandomNumber(1,26) }"
 					                        href="/smart-api/api/searchApi?belongItemId=${obj.id }"  data-access-id="${obj.id }" data-stack-root >
 					
-					                        <span class="badge"></span>
+					                        <span class="badge">${obj.name }</span>
 					                        <span class="edit-badge" title="点击修改项目图标和颜色"></span>
 					                        <span class="name">${obj.belongItem }</span>
 					                        <span class="progress list-item">

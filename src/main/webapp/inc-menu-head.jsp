@@ -107,11 +107,11 @@
         <li id="nav-track">
             <a href="/smart-api/track/searchTrack/"   data-stack-root>足迹</a>
         </li>
-        
+        <!-- 
          <li id="nav-present">
             <a href="/smart-api/present/thanks/"   data-stack-root>捐赠</a>
         </li>
-
+ 		-->
         <li id="nav-json">
             <a href="http://tool.oschina.net/codeformat/json" target="_black" data-stack-root>JSON工具</a>
         </li>

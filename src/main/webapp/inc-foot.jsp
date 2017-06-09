@@ -17,7 +17,7 @@
         <input type="hidden" id="member-admin" />
 
 
-  <a href="javaScript:void(0);" target="_blank" id="link-feedback">
+  <a href="https://github.com/Aresyi/smart-api" target="_blank" id="link-feedback">
     <i class="twr twr-dingtalk"></i>帮助
   </a>
   

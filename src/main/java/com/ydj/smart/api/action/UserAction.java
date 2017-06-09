@@ -211,13 +211,13 @@ public class UserAction extends BaseAction {
 			JSONObject user = new JSONObject();
 			user.put("companyId", companyId);
 			user.put("email", email);
-			user.put("name", email);
+			user.put("name", email.substring(0, email.indexOf("@")));
 			user.put("roleId", roleIds[i]);
 			user.put("password", password);
 			user.put("group", groupName);
 			user.put("groupId", groupId);
 			user.put("permissionAPI", permissionAPI);
-			user.put("avatar", CommonUtils.getRandomNumber(1, 4)+".jpg");
+			user.put("avatar", CommonUtils.getRandomNumber(1, 19)+".jpg");
 			user.put("createTime", System.currentTimeMillis());
 			user.put("creater", opreater);
 			
