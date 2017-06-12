@@ -110,7 +110,7 @@ db.mongo.dbName=smartAPI
 
 #### 5.1、技术群：
 
-- QQ群：582216911
+- QQ群：582216911[![17Smart 【2号群】](//pub.idqqimg.com/wpa/images/group.png)](//shang.qq.com/wpa/qunwpa?idkey=d407716d1a9691094f3bb7fe20fce9021dfec1279bcaf0d534639ccc335627ea)
 
 #### 5.2、ISSUES：
 
