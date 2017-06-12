@@ -48,12 +48,20 @@
         </dependency>
 	-->
 	
+	<!-- 
 		<dependency>
 		  <groupId>net.sourceforge</groupId>
 		  <artifactId>pin4j</artifactId>
 		  <version>2.50</version>
 		</dependency>
-	
+	 -->
+	 
+	 	<dependency>
+		  <groupId>com.belerweb</groupId>
+		  <artifactId>pinyin4j</artifactId>
+		  <version>2.5.0</version>
+		</dependency>
+	 
 		<dependency>
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity-tools</artifactId>
