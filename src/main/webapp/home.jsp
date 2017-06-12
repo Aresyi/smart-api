@@ -88,11 +88,11 @@
 							</c:forEach>
 							
 		                </div>
-		                
+		                <!-- 
 		                <div class="projects grid-view" style="text-align:center;">
 							<img alt="" src="/smart-api/assets/132226ovzio7v60yy0ir46.gif">
 						</div>
-		
+		 -->
 		            <div class="projects-footer">
 		               <!--  <a href="/teams/2c17c1fc24584c0497dd0a6ac8a3ed18/project_templates" data-stack data-visible-to="member">管理项目模板</a>  -->
 		

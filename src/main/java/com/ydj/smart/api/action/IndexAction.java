@@ -64,20 +64,20 @@ public class IndexAction extends BaseAction {
 		String email = request.getParameter("email");
 		String pass = request.getParameter("password");
 		
-		JSONObject user = null ;
+		JSONObject user = this.userDao.findUserByEmail(email); ;
 		
 		
-		if(Constant.getPro("admin.email").equals(email) ){
-			user = new JSONObject();
-			user.put("id", "5799bf52975a1224e9f06648");
-			user.put("name", "超级管理员");
-			user.put("email", email);
-			user.put("password", Constant.getPro("admin.pass"));
-			user.put("avatar", "1.jpg");
-			user.put("companyId", "5909aafee89739466bf0da0c");
-		}else{
-			user = this.userDao.findUserByEmail(email);
-		}
+//		if(Constant.getPro("admin.email").equals(email) ){
+//			user = new JSONObject();
+//			user.put("id", "5799bf52975a1224e9f06648");
+//			user.put("name", "超级管理员");
+//			user.put("email", email);
+//			user.put("password", Constant.getPro("admin.pass"));
+//			user.put("avatar", "1.jpg");
+//			user.put("companyId", "593a418ca072e1e221ef9a9b");
+//		}else{
+//			user = this.userDao.findUserByEmail(email);
+//		}
 		
 		
 		
