@@ -132,6 +132,6 @@ db.mongo.dbName=smartAPI
 
 还在用Word管理接口文档吗？还在拼接URL测试吗？是时候和Word/Excel说再见了！让我们一起SMART~
 
-您也想一起smart吗？
-
 [http://www.179smart.com/smart-api/](http://www.179smart.com/smart-api/)(账号：admin@17smart.com；密码：654321)
+
+您也想一起smart吗？烦请[此处](https://github.com/Aresyi/smart-api/issues/2)告知。
