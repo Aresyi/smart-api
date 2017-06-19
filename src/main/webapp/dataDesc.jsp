@@ -35,7 +35,7 @@
 		                            <i class="twr twr-list-view"></i>
 		                        </a>
 		                    </div>
-							<c:if test="${cookie.isEdite.value eq 1 || cookie.roleId.value eq 1}">
+							<c:if test="${cookie.roleId.value eq 8686}">
 			                    <a class="link-create-project new "
 			                        href="/smart-api/sys/settings" data-stack-root data-nocache>
 			                        	配置数据源
