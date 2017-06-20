@@ -34,7 +34,7 @@
 				<div class="page-inner" data-since="2016-07-06 09:05:53 UTC"
 					data-creator-guid="cf99cd6d64594a03bf758436dd69a217"
 					data-project-creator="d585890abe7a411ea75c9135f52598ef"
-					data-page-name="${message.title }" id="page-doc" nav="doc">
+					data-page-name="${not empty message.title ? message.title : 'Smart-API'}" id="page-doc" nav="doc">
 
 
 
