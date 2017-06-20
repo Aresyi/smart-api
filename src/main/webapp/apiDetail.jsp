@@ -7,6 +7,7 @@
 <script src="/smart-api/htdocs/json/c.js" type="text/javascript"></script>
 <link href="/smart-api/htdocs/json/s.css" type="text/css" rel="stylesheet"></link>
 
+
 <script type="text/javascript">
 <!--
 function showTocToggle() {
@@ -663,4 +664,12 @@ function go(id){
 	<%@ include file="/inc-foot.jsp"%>
 
 </body>
+
+<style>
+<!--
+.simditor .simditor-body pre, .editor-style pre {
+border-left: 0;
+}
+-->
+</style>
 </html>

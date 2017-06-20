@@ -1,5 +1,6 @@
 package com.ydj.smart.api.web;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -17,6 +18,7 @@ import com.ydj.smart.api.constant.Constant;
 import com.ydj.smart.api.dao.ApiDao;
 import com.ydj.smart.api.dao.UserDao;
 import com.ydj.smart.common.tools.CommonUtils;
+import com.ydj.smart.common.tools.WebUtils;
 
 /**
 *
@@ -60,7 +62,7 @@ public class CommonInterceptor extends BaseAction implements HandlerInterceptor 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     	String url = request.getRequestURL().toString();
     	
-    	System.out.println("------>"+url);
+    	System.out.println(new Date()+"\t"+WebUtils.getNgigxAddress(request)+"\t"+url);
     	
     	for(String excludedUrl : excludedUrls){
             if(url.contains(excludedUrl)){
@@ -111,7 +113,7 @@ public class CommonInterceptor extends BaseAction implements HandlerInterceptor 
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object arg2, ModelAndView arg3)
             throws Exception {
     	
-    	System.out.println(request.getRequestURL());
+//    	System.out.println(request.getRequestURL());
 		
     }
     

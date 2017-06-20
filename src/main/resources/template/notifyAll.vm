@@ -14,7 +14,7 @@
 		data-key-id="$one.id">
 
 		<a class="member-avatar"
-		   href="/members/$one.user.id" target="_blank">
+		   href="/smart-api/members/$one.user.id" target="_blank">
 		   <img class="avatar" src="/smart-api/assets/default_avatars/$one.user.avatar" />
 	    </a> 
 	    <a class="link"

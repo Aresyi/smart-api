@@ -51,8 +51,8 @@
 									<td>
 										${obj.desc } &nbsp;&nbsp;
 											<c:if test="${fn:startsWith(obj.href, 'http')}">
-												<a href="javaScript:void(0);" target="_black" >
-													<${obj.href }
+												<a href="${obj.href }" target="_black" >
+													${obj.href }
 												</a>
 											</c:if>
 									</td>

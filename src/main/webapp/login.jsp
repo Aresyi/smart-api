@@ -87,7 +87,7 @@
                     <div id="wechat-login"></div>
                 </div>
 
-                <a href="javascript:;" class="link-wechat-signin"><i class="twr twr-weixin"></i>微信登录</a>
+                <!--  <a href="javascript:;" class="link-wechat-signin"><i class="twr twr-weixin"></i>微信登录</a> -->
             </form>
         </div>
     </div>

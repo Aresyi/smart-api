@@ -31,12 +31,11 @@
 <meta name="baidu-site-verification" content="qLDoHdGnb64RHlkm" />
 <meta name="alexaVerifyID" content="SIgQikd9LazsFz9M1vPBaQyC4Gw" />
 
-<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-<link rel="icon" href="https://tower.im/favicon.ico" sizes="32x32" />
-<link rel="icon" href="https://tower.im/favicon.ico" sizes="64x64" />
-<link rel="icon" href="https://tower.im/favicon.ico" sizes="128x128" />
-<link rel="apple-touch-icon-precomposed"
-	href="https://tower.im/assets/mobile/icon/icon@512-84fa5f6ced2a1bd53a409013f739b7ba.png" />
+<link rel="shortcut icon" href="/smart-api/assets/favicon.ico" type="image/x-icon" />
+<link rel="icon" href="/smart-api/assets/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/smart-api/assets/favicon.ico" sizes="64x64" />
+<link rel="icon" href="/smart-api/assets/favicon.ico" sizes="128x128" />
+<link rel="apple-touch-icon-precomposed" href="/smart-api/assets/logo-sign-dff6b8806ae5cfa80c84502bb5e07c17.png" />
 
 <link
 	href="/smart-api/assets/application-39d12b990af1fdb03ea3fd8788854c4d.css"

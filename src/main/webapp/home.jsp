@@ -78,9 +78,10 @@
 									 <a class="project c${tranb:getRandomNumber(1,9) } i${tranb:getRandomNumber(1,26) }"
 					                        href="/smart-api/api/searchApi?belongItemId=${obj.id }"  data-access-id="${obj.id }" data-stack-root >
 					
-					                        <span class="badge">${obj.name }</span>
+					                        <span class="badge"></span>
+					                        <span class="name">${obj.name }</span>
 					                        <span class="edit-badge" title="点击修改项目图标和颜色"></span>
-					                        <span class="name">${obj.belongItem }</span>
+					                        <span class="pin-icon" title="星标"></span>
 					                        <span class="progress list-item">
 					                                                                       待处理任务 <em>${tranb:getRandomNumber(1,26) }</em>
 					                        </span>
@@ -88,11 +89,11 @@
 							</c:forEach>
 							
 		                </div>
-		                <!-- 
+		                 
 		                <div class="projects grid-view" style="text-align:center;">
 							<img alt="" src="/smart-api/assets/132226ovzio7v60yy0ir46.gif">
 						</div>
-		 -->
+		 
 		            <div class="projects-footer">
 		               <!--  <a href="/teams/2c17c1fc24584c0497dd0a6ac8a3ed18/project_templates" data-stack data-visible-to="member">管理项目模板</a>  -->
 		
