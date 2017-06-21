@@ -1,8 +1,18 @@
 package com.ydj.smart.api.constant;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardWatchEventKinds;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
 import java.util.Properties;
+
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 /**
  * 
@@ -18,29 +28,82 @@ public class Constant {
 	private static String cookieDomain;
 	private static String webSocket;
 	
-	private static Properties p ;
+	private static WatchService watchService ;
+	
+	private static Properties properties ;
+	
 	static{
 		System.out.println("Constant init ...");
+	
+		final String fileName = "sysConfig.properties";
+		final Resource resource = new ClassPathResource(fileName);;
 		
-		InputStream in = Constant.class.getResourceAsStream("/sysConfig.properties");
-		p = new Properties();
 		try {
-			p.load(in);
-		} catch (IOException e) {
-			e.printStackTrace();
+			
+			watchService = FileSystems.getDefault().newWatchService();
+			
+			Path path = Paths.get(resource.getFile().getParent());
+			
+			path.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY,StandardWatchEventKinds.ENTRY_CREATE);
+			
+			properties = PropertiesLoaderUtils.loadProperties(resource);
+			
+			/**此三个参数不随sysConfig.properties而改变*/
+			webRoot = properties.getProperty("webRoot");
+			cookieDomain = properties.getProperty("cookieDomain");
+			webSocket = properties.getProperty("webSocket");
+			
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
 		
-		webRoot = p.getProperty("webRoot");
-		cookieDomain = p.getProperty("cookieDomain");
-		webSocket = p.getProperty("webSocket");
-
-		if(in != null){
-			try {
-				in.close();
-			} catch (IOException e) {
-				e.printStackTrace();
+		
+		Thread watchThread = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				while(true){
+					
+					try {
+						WatchKey watchKey = watchService.take();
+						
+						for( WatchEvent<?> event : watchKey.pollEvents() ){
+							if( fileName.equals(event.context().toString()) ){
+								properties = PropertiesLoaderUtils.loadProperties(resource);
+								break;
+							}
+						}
+						
+						watchKey.reset();
+						
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+				}
+				
 			}
-		}
+		});
+		
+		watchThread.setDaemon(true);
+		watchThread.start();
+		
+		
+		Thread hook = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					watchService.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		Runtime.getRuntime().addShutdownHook(hook);
+		
 	}
 
 	/** WEB应用根目录 **/
@@ -56,6 +119,6 @@ public class Constant {
 	public static final String WEBSOCKET_USERID = "WEBSOCKET_USERID";
 			
 	public static String getPro(String key){
-		return p.getProperty(key);
+		return properties.getProperty(key);
 	}
 }
