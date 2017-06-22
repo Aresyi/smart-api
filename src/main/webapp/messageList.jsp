@@ -38,7 +38,7 @@
 					<h3>
 						<span class="title">所有的文档</span>
 						<div class="btn-group">
-							<a href="/smart-api/message/newMsg"
+							<a href="/smart-api/message/newMsg?markdown=1"
 								class="btn btn-mini btn-new-doc" target="_blank">创建文档</a>
 							<button class="btn btn-mini btn-dropdown-toggle">
 								<i class="twr twr-caret-down"></i>

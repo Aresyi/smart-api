@@ -93,7 +93,7 @@ public class MessageAction extends BaseAction {
 		String createUserId = this.getUserId(request, response);
 		
 		String title = this.getAndSetAttribute("doc_title", request);
-		String detail = this.getAndSetAttribute("doc_content", request);
+		String detail = this.getAndSetAttribute("my-editormd-html-code", request);
 		String markdown = this.getAndSetAttribute("markdown", request);
 		String isHtml = this.getAndSetAttribute("is_html", request);
 		
@@ -169,9 +169,16 @@ public class MessageAction extends BaseAction {
 	public String editeMsg (@PathVariable String id,
 	            HttpServletRequest request,HttpServletResponse response) throws Exception{
 		
-		request.setAttribute("message", this.messageDao.findMessageById(id));
+		JSONObject obj = this.messageDao.findMessageById(id);
 		
+		request.setAttribute("message", obj);
+		
+		if( obj.optInt("markdown", -1) == 1 ){
+			return "editeMsgMD";
+		}
+			
 		return "editeMsg";
+		
 	}
 	
 	
@@ -195,7 +202,7 @@ public class MessageAction extends BaseAction {
 		String createUserId = this.getUserId(request, response);
 		
 		String title = this.getAndSetAttribute("doc_title", request);
-		String detail = this.getAndSetAttribute("doc_content", request);
+		String detail = this.getAndSetAttribute("my-editormd-html-code", request);
 		String markdown = this.getAndSetAttribute("markdown", request);
 		String isHtml = this.getAndSetAttribute("is_html", request);
 		

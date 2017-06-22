@@ -55,7 +55,7 @@
 	<div class="form-item wmd-panel-wrap">
 		<div class="form-field">
 			<div class="doc-editor">
-				<textarea id="doc-content" name="doc_content" class="doc-content">${message.detail }</textarea>
+				<textarea id="doc-content" name="my-editormd-html-code" class="doc-content">${message.detail }</textarea>
 			</div>
 		</div>
 	</div>

@@ -132,7 +132,7 @@ public class UploadAction extends BaseAction {
 	
 	
 	/**
-	 * 新建文档上传图片
+	 * 新建文档上传图片(原TOWER中Markdown格式要求)
 	 * @param file
 	 * @param request
 	 * @param response
@@ -179,5 +179,57 @@ public class UploadAction extends BaseAction {
 		return res;
 
 	}
+	
+	
+	/**
+	 * 新建文档上传图片(原editormd中格式要求)
+	 * @param file
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 *
+	 * @author : Ares.yi
+	 * @createTime : 2016年7月27日 下午9:27:11
+	 */
+	@RequestMapping("editormdPic")
+	@ResponseBody
+	public JSONObject editormdPic (@RequestParam(value = "editormd-image-file", required = true) MultipartFile file,
+	            HttpServletRequest request,HttpServletResponse response) throws Exception{
+		
+		
+		String trueFileName = file.getOriginalFilename();  
+		
+		String suffix = trueFileName.substring(trueFileName.lastIndexOf("."));
+		
+        String fileName = System.currentTimeMillis()+"_"+CommonUtils.getRandomNumber(100, 999)+suffix;  
+	   
+        String path = request.getSession().getServletContext().getRealPath("/assets/msg/upload/");
+		System.out.println(path);  
+		 
+		File targetFile = new File(path, fileName);  
+		if(!targetFile.exists()){  
+           targetFile.mkdirs();  
+		}  
+ 
+       //保存  
+        try {  
+           file.transferTo(targetFile);  
+        } catch (Exception e) {  
+           e.printStackTrace();  
+        }  
+		
+        
+		JSONObject res = new JSONObject();
+		res.put("url", "/smart-api/assets/userPic/"+fileName);
+		res.put("success", 1);
+		res.put("message", "upload success!");
+		
+		return res;
+
+	}
+	
+	
+	
 	
 }

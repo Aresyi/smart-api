@@ -5,6 +5,19 @@
 
 <script type="text/javascript" src="https://ga.tower.im/piwik.js"></script>
 
+<script src="/smart-api/htdocs/mdeditor/js/jquery.min.js"></script>
+ <script src="/smart-api/htdocs/mdeditor/lib/marked.min.js"></script>
+ <script src="/smart-api/htdocs/mdeditor/lib/prettify.min.js"></script>
+ <script src="/smart-api/htdocs/mdeditor/lib/raphael.min.js"></script>
+ <script src="/smart-api/htdocs/mdeditor/lib/underscore.min.js"></script>
+ <script src="/smart-api/htdocs/mdeditor/lib/sequence-diagram.min.js"></script>
+ <script src="/smart-api/htdocs/mdeditor/lib/flowchart.min.js"></script>
+ <script src="/smart-api/htdocs/mdeditor/lib/jquery.flowchart.min.js"></script>
+ <script src="/smart-api/htdocs/mdeditor/js/editormd.min.js"></script>
+
+
+
+
 <%@ include file="/inc-common.jsp"%>
 
 <body>
@@ -71,15 +84,12 @@
 								</p>
 								 -->
 							</div>
-							<script type="text/javascript">
-								//alert("ssssssss");
-								//alert($.parseJSON($(".doc-content").find("#markdown-content").val()).content);
-							</script>
+						
 							<div id="doc-content" class="doc-content editor-style gallery-wrap ${message.markdown eq 1 ? 'doc-markdown' : ''}">
-								<c:if test="${message.markdown eq 2 }">
-									<input type="hidden" id="markdown-content" value="{&quot;content&quot;:&quot;${message.detail }&quot;}" />
+								<c:if test="${message.markdown eq 1 }">
+									<textarea style="display:none;">${message.detail }</textarea>
 								</c:if>
-								<c:if test="${message.markdown != 2 }">
+								<c:if test="${message.markdown == 0 || empty message.markdown }">
 									${message.detail }
 								</c:if>	
 							</div>
@@ -427,6 +437,20 @@
 	</div>
 
 	<%@ include file="/inc-foot.jsp"%>
+	
+	 <script type="text/javascript">
+    var testEditor;
+    $(function () {
+        testEditor = editormd.markdownToHTML("doc-content", {
+            htmlDecode: "style,script,iframe",  // you can filter tags decode
+            emoji: true,
+            taskList: true,
+            tex: true,  // 默认不解析
+            flowChart: true,  // 默认不解析
+            sequenceDiagram: true,  // 默认不解析
+            codeFold: true,
+    });});
+ </script>
 
 </body>
 </html>
