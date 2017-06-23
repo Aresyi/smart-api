@@ -214,6 +214,7 @@
 								</c:if>
 								<a href="/smart-api/api/${obj.id }/apiDetail/" target="_blank">查看</a>
 								<a href='/smart-api/api/${obj.id }/apiTest/' target='_blank'>调试</a>
+								<a href='/smart-api/api/${obj.id }/mockTest/' target='_blank'>MOCK</a>
 							</td>
 						</tr>
 					</c:forEach>

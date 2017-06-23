@@ -18,6 +18,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.socket.TextMessage;
 
 import com.tranb.ocr.utils.Pagination;
@@ -834,7 +835,35 @@ public class APIAction extends BaseAction {
 		return "apiTest";
 	}
 	
-	
-	
+	@ResponseBody
+	@RequestMapping(value="{id}/mockTest",produces = "text/html;charset=UTF-8")
+	public String mockTest(@PathVariable String id,
+            HttpServletRequest request,HttpServletResponse response) throws Exception{
+		//FIXME : 暂时的假Mock ~~
+		String companyId = this.getCompanyId(request, response);
+		
+		JSONObject one = new JSONObject();
+		
+		one = this.apiDao.findAPIById(id);
+		
+		String href = Constant.WEB_ROOT +  "api/"+id+"/apiDetail/" ;
+		
+		String opreater = this.getUser(request,response);
+		this.sysDao.saveSysLog(companyId,opreater, "Mock调试["+one.getString("belongItem")+"->"+one.getString("belongModule")+"->"+one.getString("name")+"]接口  ",href);
+		
+		String res = one.optString("result");
+		
+		try {
+			JSONObject.fromObject(res);
+		} catch (Exception e) {
+			JSONObject json = new JSONObject();
+			json.put("code", "500000");
+			json.put("message", "mock失败，请在接口发布时输入符合mockjs规则的'返回结果'示例json数据.否则无法进行MOCK测试。");
+			
+			res = json.toString();
+		}
+		
+		return res;
+	}
 	
 }

@@ -111,7 +111,15 @@
 							</c:forEach>
 							<tr>
 								<td colspan="2" align="center">
-									<input type='submit' class="btn" name='submit' value='检查问题'/>		
+									<input type='submit' class="btn" name='submit' value='检查问题'/>
+									<c:if test="${not empty one.result }">
+										<input type='button' class="btn" name='submit' value='Mock Test' onclick="mock('${one.id}');"/>
+										<script type="text/javascript">
+											function mock(id){
+												window.open("/smart-api/api/"+id+"/mockTest/");
+											}
+										</script>
+									</c:if>		
 								</td>
 							</tr>
 						</table>

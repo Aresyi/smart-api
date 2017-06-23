@@ -6,6 +6,11 @@
 <%@ include file="/inc-common.jsp" %>
 
 
+<link rel="stylesheet" href="/smart-api/htdocs/timeline/fishBone/css/fishBone.css" />
+<script type="text/javascript" src="/smart-api/htdocs/timeline/fishBone/js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="/smart-api/htdocs/timeline/fishBone/js/fishBone.js"></script>
+<script type="text/javascript" src="/smart-api/htdocs/timeline/fishBone/js/jquery.SuperSlide.2.1.1.js"></script>
+
 <script type="text/javascript">
 		
 		function del(obj,id){
@@ -34,6 +39,15 @@
 		}
 		
 		</script>
+
+<script>
+	data = [{'审理时间':'2016-12-20 至 2016-12-20','承办庭室':'XXXX','承办法官':'XXX','承办法院':'XXXXXXX法院','案件状态':'XX','案号':'(XXXX)XXXXXX第XXXX号'},{'审理时间': '2016-12-20 至 2016-12-20','承办庭室':'XXXX','承办法官':'XXX','承办法院':'XXXXXXX法院','案件状态':'XX','案号':'(XXXX)XXXXXX第XXXX号'},{'审理时间': '2016-12-20 至 2016-12-20','承办庭室':'XXXX','承办法官':'XXX','承办法院':'XXXXXXX法院','案件状态':'XX','案号':'(XXXX)XXXXXX第XXXX号(当前案件)'},{'审理时间': '2016-12-20 至 2016-12-20','承办庭室':'XXXX','承办法官':'XXX','承办法院':'XXXXXXX法院','案件状态':'XX','案号':'(XXXX)XXXXXX第XXXX号'},{'审理时间': '2016-12-20 至 2016-12-20','承办庭室':'XXXX','承办法官':'XXX','承办法院':'XXXXXXX法院','案件状态':'XX','案号':'(XXXX)XXXXXX第XXXX号'},{'审理时间': '2016-12-20 至 2016-12-20','承办庭室':'XXXX','承办法官':'XXX','承办法院':'XXXXXXX法院','案件状态':'XX','案号':'(XXXX)XXXXXX第XXXX号'},{'审理时间': '2016-12-20 至 2016-12-20','承办庭室':'XXXX','承办法官':'XXX','承办法院':'XXXXXXX法院','案件状态':'XX','案号':'(XXXX)XXXXXX第XXXX号(当前案件)'},{'审理时间': '2016-12-20 至 2016-12-20','承办庭室':'XXXX','承办法官':'XXX','承办法院':'XXXXXXX法院','案件状态':'XX','案号':'(XXXX)XXXXXX第XXXX号(当前案件)'},{'审理时间': '2016-12-20 至 2016-12-20','承办庭室':'XXXX','承办法官':'XXX','承办法院':'XXXXXXX法院','案件状态':'XX','案号':'(XXXX)XXXXXX第XXXX号(当前案件)'},{'审理时间': '2016-12-20 至 2016-12-20','承办庭室':'XXXX','承办法官':'XXX','承办法院':'XXXXXXX法院','案件状态':'XX','案号':'(XXXX)XXXXXX第XXXX号'},{'审理时间': '2016-12-20 至 2016-12-20','承办庭室':'XXXX','承办法官':'XXX','承办法院':'XXXXXXX法院','案件状态':'XX','案号':'(XXXX)XXXXXX第XXXX号(当前案件)'},{'审理时间': '2016-12-20 至 2016-12-20','承办庭室':'XXXX','承办法官':'XXX','承办法院':'XXXXXXX法院','案件状态':'XX','案号':'(XXXX)XXXXXX第XXXX号(当前案件)'},{'审理时间': '2016-12-20 至 2016-12-20','承办庭室':'XXXX','承办法官':'XXX','承办法院':'XXXXXXX法院','案件状态':'XX','案号':'(XXXX)XXXXXX第XXXX号'},{'审理时间': '2016-12-20 至 2016-12-20','承办庭室':'XXXX','承办法官':'XXX','承办法院':'XXXXXXX法院','案件状态':'XX','案号':'(XXXX)XXXXXX第XXXX号(当前案件)'}];
+	$(function() {
+		//创建案件历史
+		$(".fishBone").fishBone(data);
+	});
+	
+</script>
 
 
 <body>
@@ -85,81 +99,9 @@
 							<input type="submit" value="查&nbsp&nbsp询" /> <font color="red">${message }</font>
 						</form>
 					</div>
-				<table border="1" cellpadding="0" cellspacing="0" width="100%"
-					bordercolor="gray">
-					<tr align="center" height="30px" bgcolor="#F8F8FF">
-						<th width="5%">
-							编号
-						</th>
-						<th width="10%">
-							所在项目
-						</th>
-						<th width="5%">
-							迭代版本
-						</th>
-						<th width="20%">
-							需求简述
-						</th>
-						<th width="20%">
-							版本目标 
-						</th>
-						<th width="5%">
-							发版日期
-						</th>
-						<th width="5%">
-							检测日期 
-						</th>
-						<th width="5%">
-							录入人
-						</th>
-						<th width="15%">
-							操作
-						</th>
-					</tr>
-					
-					<c:forEach var="obj" items="${pagerecords.records}" varStatus="v">
-						<tr id="${v.count }" align="center" style="top: 3; bottom: 3;background-color:${v.count%2==0?'#FFFFFF':'#F8F8F8'}" onmouseover="this.style.backgroundColor='#00FF00';" onmouseout="if(this.id % 2==0){this.style.backgroundColor='#EFEFEF';}else{this.style.backgroundColor='#F8F8F8';}">
-							<td>
-								${v.count }&nbsp;
-							</td>
-							<td>
-								${obj.belongItem }&nbsp;
-							</td>
-							<td>
-								${obj.version }&nbsp;
-							</td>
-							<td>
-								${obj.reqDes }&nbsp;
-							</td>
-							<td>
-								${obj.target }&nbsp;
-							</td>
-							<td>
-								${obj.releaseDate }&nbsp;
-							</td>
-							<td>
-								${obj.checkDate}
-							</td>
-							<td>
-								${obj.creater }&nbsp;
-							</td>
-							
-							<td>
-								<c:if test="${empty obj.isDel && (cookie.isEdite.value eq 1 || obj.createUserId eq cookie.id.value)}">
-									<a href="/smart-api/track/${obj.id }/toEditeTrack/">修改</a>
-									<a href="javaScript:void(0);" onclick="del(this,'${obj.id}');">废弃</a>
-								</c:if>
-								<a href="/smart-api/track/${obj.id }/trackDetail/" target="_blank">查看</a>
-							</td>
-						</tr>
-					</c:forEach>
-				</table>
-				<c:url var="paginationUrlPattern" value="/track/searchTrack?">
-				<c:param name="page" value="_page_" />
-				<c:param name="belongItemId" value="${belongItemId }" />
-				</c:url>
-				<tranb:pagination pagination="${pagerecords}" urlPattern="${paginationUrlPattern}" />
-		
+						<div class="container">
+							<div class="fishBone" />
+						</div>
 		        </div>
 		
 		    </div>

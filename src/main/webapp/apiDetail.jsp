@@ -257,7 +257,7 @@ function go(id){
 					
 					<a name="result" id="result"></a>
 					<div style='text-align: left;font-size: 25;padding-bottom: 5px;'>
-						返回结果&nbsp;&nbsp;(<a href='/smart-api/api/${one.id }/apiTest/' target='_blank'>调试该接口</a>)
+						返回结果&nbsp;&nbsp;(<a href='/smart-api/api/${one.id }/apiTest/' target='_blank'>调试该接口</a>)<c:if test="${not empty one.result }">&nbsp;&nbsp;&nbsp;(<a href='/smart-api/api/${one.id }/mockTest/' target='_blank'>MOCK</a>)</c:if>
 					</div>
 					<p>
 						JSON示例
@@ -366,7 +366,7 @@ function go(id){
 					<div style='text-align: left;font-size: 25;padding-bottom: 5px;'>
 						调试接口
 					</div>
-					<pre style='padding-left: 15px;padding-bottom: 15px;'><a href='/smart-api/api/${one.id }/apiTest/' target='_blank'>使用网页调试工具调试该接口</a></pre>
+					<pre style='padding-left: 15px;padding-bottom: 15px;'><a href='/smart-api/api/${one.id }/apiTest/' target='_blank'>服务器调试</a><c:if test="${not empty one.result }">&nbsp;&nbsp;&nbsp;<a href='/smart-api/api/${one.id }/mockTest/' target='_blank'>MOCK测试</a></c:if></pre>
 
 					<a name="dafen" id="dafen"></a>
 					<div style='text-align: left;font-size: 25;padding-bottom: 5px;'>
