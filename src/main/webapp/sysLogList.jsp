@@ -52,7 +52,7 @@
 										${obj.desc } &nbsp;&nbsp;
 											<c:if test="${fn:startsWith(obj.href, 'http')}">
 												<a href="${obj.href }" target="_black" >
-													${obj.href }
+													<img width="12px" height="12px" src='/smart-api/assets/href.jpg'/>
 												</a>
 											</c:if>
 									</td>
