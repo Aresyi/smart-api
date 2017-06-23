@@ -62,13 +62,15 @@ public class CommonInterceptor extends BaseAction implements HandlerInterceptor 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     	String url = request.getRequestURL().toString();
     	
-    	System.out.println(new Date()+"\t"+WebUtils.getNgigxAddress(request)+"\t"+url);
+    	
     	
     	for(String excludedUrl : excludedUrls){
             if(url.contains(excludedUrl)){
                 return true;
             }
         }
+    	
+    	System.out.println(new Date()+"\t"+WebUtils.getNgigxAddress(request)+"\t"+url);
     	
     	try {
     		this.getUser(request, response);

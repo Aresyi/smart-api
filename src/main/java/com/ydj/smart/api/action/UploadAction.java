@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ydj.smart.api.constant.Constant;
 import com.ydj.smart.api.dao.UserDao;
 import com.ydj.smart.api.web.BaseAction;
 import com.ydj.smart.common.tools.CommonUtils;
@@ -172,7 +173,7 @@ public class UploadAction extends BaseAction {
 		
         
 		JSONObject res = new JSONObject();
-		res.put("file-path", "/smart-api/assets/userPic/"+fileName);
+		res.put("file-path", Constant.WEB_ROOT+"assets/msg/upload/"+fileName);
 		res.put("success", true);
 		res.put("attach", userId);
 		
@@ -221,7 +222,7 @@ public class UploadAction extends BaseAction {
 		
         
 		JSONObject res = new JSONObject();
-		res.put("url", "/smart-api/assets/userPic/"+fileName);
+		res.put("url", Constant.WEB_ROOT+"assets/msg/upload/"+fileName);
 		res.put("success", 1);
 		res.put("message", "upload success!");
 		
