@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.velocity.app.VelocityEngine;
@@ -95,6 +96,25 @@ public class TrackAction extends BaseAction {
 		
 		Pagination<JSONObject> pagerecords =this.trackDao.findTrackByPage(companyId,belongItemId,keyword,page,30);
 		request.setAttribute("pagerecords", pagerecords);
+		
+		List<JSONObject> list = pagerecords.getRecords();
+		
+		JSONArray ary = new JSONArray();
+		for(JSONObject one : list){
+			String goal = one.getString("reqDes");
+			String target = one.getString("target");
+
+			JSONObject a = new JSONObject();
+			a.put("日期", one.getString("releaseDate")+" 至  " + one.getString("checkDate") );
+			a.put("目标",  goal.substring(0,Math.min(25, goal.length())));
+			a.put("版本", one.getString("version") );
+			a.put("负责人", one.getString("dutyPerson") );
+			a.put("结果", target.substring(0,Math.min(25, target.length())) );
+			ary.add(a);
+		}
+		
+		request.setAttribute("data", ary);
+		
 		
 		return "trackList";
 	}

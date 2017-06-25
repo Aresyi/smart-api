@@ -25,8 +25,8 @@
 <link
 	href="/smart-api/assets/doc-editor-9eb6c4f0fcc04e29cb80546f1dea1737.css"
 	media="all" rel="stylesheet" type="text/css" />
-<link rel="stylesheet"
-	href="/smart-api/htdocs/mdeditor/css/editormd.css" />
+	
+<link rel="stylesheet"href="/smart-api/htdocs/mdeditor/css/editormd.css" />
 
 <script src="/smart-api/htdocs/mdeditor/js/jquery.min.js"></script>
 <script src="/smart-api/htdocs/mdeditor/js/editormd.min.js"></script>

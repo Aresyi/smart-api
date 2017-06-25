@@ -1,0 +1,158 @@
+.fishBone *{
+	margin: 0;
+	padding: 0;
+}
+.fishBone ul{
+	overflow: visible!important;	
+}
+.fishBone ul,li{
+	list-style: none;
+	line-height: 2em
+}
+.fishBone{
+color: #767676;
+	width: 100%;
+	height: 100%;
+	white-space:nowrap;
+	position: relative;
+	font-size: 12px;
+}
+.fishBone .wrapper{
+  padding: 0 10px;
+  margin: auto;
+  overflow: hidden;
+}
+.fishBone .wrapper .bd {
+	overflow: hidden;
+}
+.fishBone .item{
+	position: relative;
+	width: 150px;
+	height: 350px;
+	display: inline-block;
+	margin-left:20px;
+}
+.fishBone .item .first{
+	line-height:2em;
+}
+.fishBone .item .title{
+	border-left:none;
+}
+.fishBone .item .title .title-left{
+	display:inline-block;
+	width:15px;
+	line-height: 2.1em;
+	background: url("../img/title.png") no-repeat 0 0;
+	font-size: 14px;
+}
+.fishBone .item .title .title-center{
+	display:inline-block;
+	background: url("../img/title.png") repeat-x 0 -600px;
+	font-size: 15px;
+	font-weight:bold;
+	font-family:'微软雅黑';
+	line-height: 2.1em;
+	color: white;
+}
+.fishBone .item .title .title-right{
+	display:inline-block;
+	width:15px;
+	line-height: 2.1em;
+	background: url("../img/title.png") no-repeat 0 -1200px;
+	font-size: 14px;
+}
+.fishBone .item .title{
+	display: block;
+	position: relative;
+	left: -33px;
+	background: url(../img/line-point.png) no-repeat 12px -212px;
+}
+.fishBone .item.top .title{
+}
+.fishBone .item.bottom .title{
+	bottom: 0;
+}
+.fishBone .item .content{
+	padding-left: 13px;
+	position: absolute;
+}
+.fishBone .item.top .content{
+	padding-top: 5px;
+	top: 10px;
+	padding-bottom: 13px;
+}
+.fishBone .item.bottom .content{
+	bottom: 7px;
+	padding-top: 10px;
+	padding-bottom: 5px;
+}
+.fishBone .item.bottom{
+}
+
+.fishBone .item .content ul{}
+.fishBone .item .content ul li{
+	padding-left:13px;
+}
+.fishBone .item .content ul li.line-first{
+	position: relative;
+	padding-left: 19px;
+	left: -4px;
+	border-left: 0!important;
+	background: url(../img/line-first.png) no-repeat 0px 0px;
+	font-size: 14px;
+	font-family:'微软雅黑';
+	font-weight: 550;
+}
+.fishBone .item .content ul li.line-last{
+	border-left:none;
+}
+.fishBone .item.top .content ul li .name{}
+.fishBone .item.top .content ul li .text{}
+/**prev next*/
+.fishBone .prev {
+	position: absolute;
+	top: 154px;
+	left: 0;
+	display: inline-block;
+	width: 20px;
+	height: 40px;
+	background: url(../img/arrow.png) no-repeat -1px 13px;
+}
+.fishBone .prev:hover{
+cursor: pointer;
+background-position-y: -28px;
+}
+.fishBone .next:hover{
+cursor: pointer;
+background-position-y: -28px;
+}
+.fishBone .next {
+	position: absolute;
+	top: 154px;
+	right: 0;
+	display: inline-block;
+	width: 20px;
+	height: 40px;
+	background: url(../img/arrow.png) no-repeat -19px 13px;
+}
+/**line**/
+.fishBone .line {
+	position: absolute;
+	top: 175px;
+	height: 1px;
+	width: 100%;
+	border-bottom: 2px dashed #7E899D;
+	z-index: 99;
+}
+.fishBone .item .line-point {
+	position: absolute;
+	left: 4px;
+	bottom: -4px;
+	display: block;
+	height: 18px;
+	width: 18px;
+	background: url(../img/line-point.png) no-repeat 0px 0px;
+}
+.fishBone .item.bottom .line-point {
+	top: -6px
+}

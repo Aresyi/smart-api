@@ -143,10 +143,12 @@ public class MessageAction extends BaseAction {
 		List<JSONObject> messageList = this.messageDao.getAllMessage(companyId);
 		
 		for(JSONObject one : messageList){
-			String s = one.optString("detail", "").replace("<a", "<p>").replace("</a>", "</p>").replace("<div", "<p>").replace("</div>", "</p>");
-//			if(s.length() > 1000){
-//				s = s.substring(0, 1000);
-//			}
+			String s = one.optString("detail", "");//.replace("<a", "<p>").replace("</a>", "</p>").replace("<div", "<p>").replace("</div>", "</p>");
+
+			s = deleteAllHTMLTag(s);
+			
+			//s = s.substring(0,Math.min(1000, s.length()));
+			
 			one.put("detail", s);
 		}
 		
@@ -155,6 +157,26 @@ public class MessageAction extends BaseAction {
 		return "messageList";
 	}
 	
+	
+	/**
+	  * 删除所有的HTML标签
+	  *
+	  * @param source 需要进行除HTML的文本
+	  * @return
+	  */
+	 private static String deleteAllHTMLTag(String source) {
+
+	  if(source == null) {
+	       return "";
+	  }
+
+	  String s = source;
+	  /** 删除普通标签  */
+	  s = s.replaceAll("<(S*?)[^>]*>.*?|<.*? />", "<p>");
+	  /** 删除转义字符 */
+	  s = s.replaceAll("&.{2,6}?;", "");
+	  return s;
+	 }
 	
 	/**
 	 * 修改信息

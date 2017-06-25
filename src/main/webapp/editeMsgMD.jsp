@@ -57,7 +57,7 @@
 							
 							<div class="form-item doc-title-wrap">
 								<div class="form-field">
-									<input id="doc_title" name="doc_title" class="doc-title" placeholder="${message.title }" />
+									<input id="doc_title" name="doc_title" class="doc-title" placeholder="${message.title }" value="${message.title }" />
 								</div>
 							</div>
 							<div class="form-item wmd-panel-wrap">
