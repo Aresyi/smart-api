@@ -27,7 +27,7 @@
 			
 	
     <div class="page-inner" id="page-new-project" data-page-name="足迹" nav="track">
-        <h3>版本迭代记录</h3>
+        <h3>创建足迹</h3>
         <span><font color="red">${message }</font>
 		</span>
 		<form action="/smart-api/track/addTrack/" method="post" onsubmit="return checkForm(this);">
@@ -48,9 +48,23 @@
 					</td>
 				</tr>
 				
+				<tr>
+					<td align="left">
+						类&nbsp;&nbsp;&nbsp;&nbsp;型
+					</td>
+					<td style='text-align: left;'>
+						<select name="belongItemId" onchange="toChangeModule(this);">
+							<option value='-1'>-</option>
+							<option value='0'>产品迭代发版</option>
+							<option value='1'>运营事件</option>
+							<option value='2'>市场活动</option>
+						</select>
+					</td>
+				</tr>
+				
 				<tr >
 					<td align="left">
-						迭代版本
+						版&nbsp;&nbsp;&nbsp;&nbsp;本
 					</td>
 					<td>
 						<input type="text" id="version" name="version" value="" size="114" maxlength="20"/>
@@ -59,7 +73,7 @@
 
 				<tr>
 					<td align="left">
-						需求简述
+						运作简述
 					</td>
 					<td>
 						<textarea id="reqDes" name="reqDes" style='height: 50px;width: 800px;'>${reqDes }</textarea>
@@ -68,7 +82,7 @@
 
 				<tr>
 					<td align="left">
-						版本目标
+						目&nbsp;&nbsp;&nbsp;&nbsp;标
 					</td>
 					<td>
 						<textarea id="target" name="target" style='height: 100px;width: 800px;'>${target }</textarea>
@@ -76,19 +90,9 @@
 				</tr>
 
 				
-				<tr>
-					<td align="left">
-						升级说明
-					</td>
-					<td>
-						<textarea id="upgradeDes" name="upgradeDes" style='height: 80px;width: 800px;'>${upgradeDes }</textarea>
-					</td>
-				</tr>
-				 
-				
 				<tr >
 					<td align="left">
-						发版日期
+						开始日期
 					</td>
 					<td>
 						<input type="text" id="releaseDate" name="releaseDate" value="${releaseDate }" size="114" maxlength="20" readonly="readonly" class="Wdate" onfocus="WdatePicker()"/>
@@ -97,7 +101,7 @@
 				
 				<tr >
 					<td align="left">
-						检测日期
+						验收日期
 					</td>
 					<td>
 						<input type="text" id="checkDate" name="checkDate" value="${checkDate }" size="114" maxlength="20" readonly="readonly" class="Wdate" onfocus="WdatePicker()"/>
@@ -106,7 +110,7 @@
 				
 				<tr>
 					<td align="left">
-						目标结果
+						验收结果
 					</td>
 					<td>
 						<textarea id="targetResult" name="targetResult" style='height: 100px;width: 800px;'>${targetResult }</textarea>
