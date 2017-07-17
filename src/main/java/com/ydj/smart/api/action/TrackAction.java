@@ -210,7 +210,7 @@ public class TrackAction extends BaseAction {
 		
 		String href = Constant.WEB_ROOT +  "track/"+one.getString("id")+"/trackDetail/" ;
 		
-//		this.sysDao.saveSysLog(companyId,opreater, "新建["+belongItem+"("+version+")]足迹 ",href);
+		this.sysDao.saveSysLog(companyId,opreater, "新建["+belongItem+"("+version+")]足迹 ",href);
 		
 		return "redirect:/track/"+one.getString("id")+"/trackDetail/";
 	}
