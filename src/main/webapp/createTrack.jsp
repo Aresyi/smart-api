@@ -53,11 +53,10 @@
 						类&nbsp;&nbsp;&nbsp;&nbsp;型
 					</td>
 					<td style='text-align: left;'>
-						<select name="belongItemId" onchange="toChangeModule(this);">
-							<option value='-1'>-</option>
-							<option value='0'>产品迭代发版</option>
-							<option value='1'>运营事件</option>
-							<option value='2'>市场活动</option>
+						<select name="belongType">
+							<option value='产品迭代发版'>产品迭代发版</option>
+							<option value='运营事件'>运营事件</option>
+							<option value='市场活动'>市场活动</option>
 						</select>
 					</td>
 				</tr>

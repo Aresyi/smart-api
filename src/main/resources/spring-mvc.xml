@@ -59,6 +59,8 @@
 					<value>index/signIn</value>
 					<value>index/signOut</value>
 					<value>/go/404</value>
+					<value>/myhome.html</value>
+					<value>/my.html</value>
 				</list>
 			</property>
 		</bean>  

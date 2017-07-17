@@ -139,10 +139,10 @@ public class TrackAction extends BaseAction {
 		String message = null;
 		
 		String belongItemId = getAndSetAttribute("belongItemId",request);
+		String belongType = getAndSetAttribute("belongType",request);
 		String version = getAndSetAttribute("version",request);
 		String reqDes = getAndSetAttribute("reqDes",request);
 		String target = getAndSetAttribute("target",request);
-		String upgradeDes = getAndSetAttribute("upgradeDes",request);
 		String releaseDate = getAndSetAttribute("releaseDate",request);
 		String checkDate = getAndSetAttribute("checkDate",request);
 		String targetResult = getAndSetAttribute("targetResult",request);
@@ -186,10 +186,10 @@ public class TrackAction extends BaseAction {
 		track.put("companyId", companyId);
 		track.put("belongItemId", belongItemId);
 		track.put("belongItem", belongItem);
+		track.put("belongType", belongType);
 		track.put("version", version);
 		track.put("reqDes", reqDes);
 		track.put("target", target);
-		track.put("upgradeDes", upgradeDes);
 		track.put("releaseDate", releaseDate);
 		track.put("checkDate", checkDate);
 		track.put("targetResult", targetResult);
@@ -210,7 +210,7 @@ public class TrackAction extends BaseAction {
 		
 		String href = Constant.WEB_ROOT +  "track/"+one.getString("id")+"/trackDetail/" ;
 		
-		this.sysDao.saveSysLog(companyId,opreater, "新建["+belongItem+"("+version+")]足迹 ",href);
+//		this.sysDao.saveSysLog(companyId,opreater, "新建["+belongItem+"("+version+")]足迹 ",href);
 		
 		return "redirect:/track/"+one.getString("id")+"/trackDetail/";
 	}
