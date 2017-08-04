@@ -170,7 +170,22 @@ public class UserDao extends BaseMongoDao {
 		
 		return this.change2Bean(obj,JSONObject.class);
 	}
-	
+
+	/**
+	 * 查询用户 根据微信openId查询
+	 * @param openId
+	 * @return
+	 */
+	public JSONObject findUserByOpenId(String openId){
+		DBCollection userCollection = this.getUserCollection();
+
+		DBObject query = new BasicDBObject();
+		query.put("openId", openId);
+
+		DBObject obj = userCollection.findOne(query);
+
+		return this.change2Bean(obj,JSONObject.class);
+	}
 	
 	/**
 	 * 查询指定用户
@@ -324,5 +339,23 @@ public class UserDao extends BaseMongoDao {
 		return this.change2ListJSONObject(userCollection.find(query));
 	}
 
+	/**
+	 * 添加/更新用户openId
+	 * @param id
+	 * @param openId
+	 */
+	public void saveOrUpdateUserOpenId(String id, String openId){
+		DBCollection userCollection = this.getUserCollection();
+		DBObject query = new BasicDBObject();
+		query.put("_id", new ObjectId(id));
+
+		DBObject res = new BasicDBObject();
+		res.put("openId", openId);
+
+		BasicDBObject doc = new BasicDBObject();
+		doc.put("$set", res);
+
+		userCollection.update(query, doc,false,false);
+	}
 	
 }

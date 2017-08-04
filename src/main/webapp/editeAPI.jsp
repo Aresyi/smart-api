@@ -420,12 +420,25 @@
 									</td>
 									<td style='text-align: left;'>
 										<c:forEach var="one" items="${obj.value}" varStatus="vv">
-											<input class="${obj.key}" name="noticEmail" style='vertical-align: middle' type="checkbox" value = "${one.email }">&nbsp;${one.name } &nbsp;&nbsp;
+											<input class="${obj.key}" name="noticEmail" style='vertical-align: middle' type="checkbox" value = "${one.email }">&nbsp;${one.name } <c:if test="${ not empty one.openId }"><i class="fa fa-weixin"></i></c:if>&nbsp;&nbsp;
 										</c:forEach>
 									</td>
 								</tr>
 							</c:forEach>
 						</table>
+					</td>
+				</tr>
+
+				<tr>
+					<td align="left">
+						微信通知
+					</td>
+					<td style='text-align: left;'>
+						<select id="wxPush" name="wxPush" >
+							<option value="是">是</option>
+							<option value="否">否</option>
+						</select>
+						<font color="gray">（Email通知选中且已绑定微信的用户才会收到通知，在个人设置中绑定微信）</font>
 					</td>
 				</tr>
 				

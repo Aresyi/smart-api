@@ -1,19 +1,19 @@
 /** **/
 package com.ydj.smart.api.action;
 
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.tranb.ocr.utils.Pagination;
+import com.ydj.smart.api.constant.CommentType;
+import com.ydj.smart.api.constant.Constant;
+import com.ydj.smart.api.constant.NotifyType;
+import com.ydj.smart.api.dao.*;
+import com.ydj.smart.api.push.SystemWebSocketHandler;
+import com.ydj.smart.api.push.WXService;
+import com.ydj.smart.api.push.WebSocketService;
+import com.ydj.smart.api.web.BaseAction;
+import com.ydj.smart.common.thread.ThreadTask;
+import com.ydj.smart.common.tools.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,24 +21,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.socket.TextMessage;
 
-import com.tranb.ocr.utils.Pagination;
-import com.ydj.smart.api.constant.CommentType;
-import com.ydj.smart.api.constant.Constant;
-import com.ydj.smart.api.constant.NotifyType;
-import com.ydj.smart.api.dao.ApiDao;
-import com.ydj.smart.api.dao.CommentDao;
-import com.ydj.smart.api.dao.DBTableDao;
-import com.ydj.smart.api.dao.NotifyDao;
-import com.ydj.smart.api.dao.SysConfDao;
-import com.ydj.smart.api.dao.SysDao;
-import com.ydj.smart.api.dao.UserDao;
-import com.ydj.smart.api.push.SystemWebSocketHandler;
-import com.ydj.smart.api.push.WebSocketService;
-import com.ydj.smart.api.web.BaseAction;
-import com.ydj.smart.common.tools.CommonUtils;
-import com.ydj.smart.common.tools.MailUtils;
-import com.ydj.smart.common.tools.StringUtils;
-import com.ydj.smart.common.tools.WebUtils;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -107,23 +98,23 @@ public class APIAction extends BaseAction {
 	 */
 	@RequestMapping("addAPI")
 	public String addAPI (
-            HttpServletRequest request,HttpServletResponse response) throws Exception{
+			final HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
-		String companyId = this.getCompanyId(request, response);
+		final String companyId = this.getCompanyId(request, response);
 		
-		String opreater = this.getUser(request,response);
-		String userId = this.getUserId(request, response);
+		final String opreater = this.getUser(request,response);
+		final String userId = this.getUserId(request, response);
 		
 		String message = null;
 		
-		String name = getAndSetAttribute("name",request);
+		final String name = getAndSetAttribute("name",request);
 		String des = getAndSetAttribute("des",request);
 		String belongItemId = getAndSetAttribute("belongItemId",request);
 		String belongModuleId = getAndSetAttribute("belongModuleId",request);
 		String url = getAndSetAttribute("url",request);
 		String needCookie = getAndSetAttribute("needCookie",request);
 		String result = getAndSetAttribute("result",request);
-		String other = getAndSetAttribute("other",request);
+		final String other = getAndSetAttribute("other",request);
 		
 		String para_name[] =getAndSetAttribute2("para_name",request);
 		String para_type[] = getAndSetAttribute2("para_type",request);
@@ -176,7 +167,7 @@ public class APIAction extends BaseAction {
 		
 		JSONObject module = this.apiDao.findModuleById(belongModuleId);
 		
-		String belongItem = module.optString("itemName");
+		final String belongItem = module.optString("itemName");
 		String belongModule = module.optString("name");
 		
 		
@@ -232,33 +223,59 @@ public class APIAction extends BaseAction {
 		
 		
 		String href = "";
-		String title =  new StringBuilder()
+		final String title =  new StringBuilder()
 				.append(belongItem)
 				.append("-->")
 				.append(belongModule)
 				.append("-->")
 				.append(name).toString();
 		
-		JSONObject one = this.apiDao.findAPIByNameAndCreateTime(companyId,name, now);
+		final JSONObject one = this.apiDao.findAPIByNameAndCreateTime(companyId,name, now);
 		
 		href = Constant.WEB_ROOT +  "api/"+one.getString("id")+"/apiDetail/" ;
 		
 		if(noticEmail != null && noticEmail.length > 0){
 			
 			
-			String mailContent = new StringBuilder()
+			final String mailContent = new StringBuilder()
 			.append(title)
 			.append("  接口信息请访问：")
 			.append("<br>")
 			.append("<a href='"+href+"'>"+href+"</a>")
 			.append("<br><br>")
 			.toString();
-			for(String email : noticEmail){
-				MailUtils.asynSend(MailUtils.REG_NOREPLY, email,"新API["+title+"]使用信息", mailContent);
-				
-				JSONObject user = this.userDao.findUserByEmail(email);
-				
-				this.notify(companyId,user.getString("id"), userId, opreater, "新建API", name, one.getString("id"), title);
+
+			final JSONObject confInf = sysConfDao.findBasicInfo4ItemId(companyId,itemId);
+			final String id = one.getString("id");
+			for(final String email : noticEmail){
+				final JSONObject user = this.userDao.findUserByEmail(email);
+				ThreadTask.getInstance().run(ThreadTask.commonThreadPool, new Runnable() {
+					@Override
+					public void run() {
+						MailUtils.asynSend(MailUtils.REG_NOREPLY, email,"新API["+title+"]使用信息", mailContent);
+
+						notifyUser(companyId,user.getString("id"), userId, opreater, "新建API", name, one.getString("id"), title);
+
+						try {
+							String wxPush = getAndSetAttribute("wxPush",request);
+							if("是".equals(wxPush)){
+								//发送微信模板消息
+								String authorName = userDao.findUserById(userId).optString("name");
+								String wxAppId = confInf.optString("wxAppId");
+								String wxAppSecret = confInf.optString("wxAppSecret");
+								String openId = user.optString("openId");
+								String itemName = belongItem;
+								String pushTtitle = authorName+"编辑了API"+"：【"+title+"】";
+								String updateInfo = other;
+								String clickUrl = Constant.WEB_ROOT +  "api/"+id+"/apiDetail/openId/"+openId;
+								WXService.sendTemplateMessage(wxAppId,wxAppSecret,openId,itemName,pushTtitle,updateInfo,clickUrl);
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+
 			}
 		}
 		
@@ -274,7 +291,7 @@ public class APIAction extends BaseAction {
 	}
 	
 	
-	private void notify(String companyId,String userId,String actorId,String opreater,String action,String target,String targetId,String content){
+	private void notifyUser(String companyId,String userId,String actorId,String opreater,String action,String target,String targetId,String content){
 		JSONObject one = new JSONObject();
 		one.put("companyId", companyId);
 		one.put("userId", userId);
@@ -429,7 +446,53 @@ public class APIAction extends BaseAction {
 		
 		return  "apiDetail";
 	}
-	
+
+	/**
+	 * 查看具体API 来自微信的访问
+	 */
+	@RequestMapping("{id}/apiDetail/openId/{openId}")
+	public String apiDetailOpenId(@PathVariable String id,@PathVariable String openId,String history,
+								  HttpServletRequest request,HttpServletResponse response) throws Exception{
+		JSONObject user = userDao.findUserByOpenId(openId);
+		JSONObject apiById = apiDao.findAPIById(id);
+		if(user.optString("companyId").equals(apiById.optString("companyId"))){
+
+
+			String name = user.getString("name");
+			String userId = user.getString("id");
+			String companyId = user.getString("companyId");
+
+			HttpSession session = request.getSession();
+
+			response.addCookie(CookieUtils.newCookie("name",StringUtils.base64Encode(name)));
+			response.addCookie(CookieUtils.newCookie("avatar",user.optString("avatar")));
+			response.addCookie(CookieUtils.newCookie("id",userId));
+			response.addCookie(CookieUtils.newCookie("email",StringUtils.base64Encode(user.optString("email"))));
+			response.addCookie(CookieUtils.newCookie("roleId",user.optString("roleId")));
+			response.addCookie(CookieUtils.newCookie("isEdite",user.optString("isEdite")));
+
+			this.sysDao.saveSysLog(companyId,name, "登录["+Constant.getPro("sysName")+"]");
+
+			session.setAttribute("userName",name);
+			session.setAttribute("userId",userId);
+			session.setAttribute("companyId",companyId);
+			session.setAttribute(Constant.WEBSOCKET_USERID,userId);
+
+			Object referer = session.getAttribute("Referer");
+			if(referer != null  ){
+				String s = referer.toString();
+				if(!"".equals(s) && !s.contains("login") && !s.contains("signOut")){
+					response.sendRedirect(s);
+					return null;
+				}
+			}
+
+
+			return this.apiDetail(id,history,request,response);
+		}
+		return null;
+
+	}
 	
 	private void getAndSetAllUser(HttpServletRequest request,HttpServletResponse response) throws Exception{
 		
@@ -536,24 +599,24 @@ public class APIAction extends BaseAction {
 	 */
 	@RequestMapping("editeAPI")
 	public String editeAPI (
-            HttpServletRequest request,HttpServletResponse response) throws Exception{
+			final HttpServletRequest request, HttpServletResponse response) throws Exception{
 		
-		String companyId = this.getCompanyId(request, response);
+		final String companyId = this.getCompanyId(request, response);
 		
-		String opreater = this.getUser(request,response);
-		String userId = this.getUserId(request, response);
+		final String opreater = this.getUser(request,response);
+		final String userId = this.getUserId(request, response);
 		
 		String message = null;
 		
-		String id = getAndSetAttribute("id",request);
-		String name = getAndSetAttribute("name",request);
+		final String id = getAndSetAttribute("id",request);
+		final String name = getAndSetAttribute("name",request);
 		String des = getAndSetAttribute("des",request);
 		String belongItemId = getAndSetAttribute("belongItemId",request);
 		String belongModuleId = getAndSetAttribute("belongModuleId",request);
 		String url = getAndSetAttribute("url",request);
 		String needCookie = getAndSetAttribute("needCookie",request);
 		String result = getAndSetAttribute("result",request);
-		String other = getAndSetAttribute("other",request);
+		final String other = getAndSetAttribute("other",request);
 		
 		String para_name[] =getAndSetAttribute2("para_name",request);
 		String para_type[] = getAndSetAttribute2("para_type",request);
@@ -608,7 +671,7 @@ public class APIAction extends BaseAction {
 		
 		JSONObject module = this.apiDao.findModuleById(belongModuleId);
 		
-		String belongItem = module.optString("itemName");
+		final String belongItem = module.optString("itemName");
 		String belongModule = module.optString("name");
 		
 		
@@ -687,32 +750,61 @@ public class APIAction extends BaseAction {
 		String noticEmail[] = request.getParameterValues("noticEmail");
 		
 		String href = "";
-		String title =  new StringBuilder()
+		final String title =  new StringBuilder()
 				.append(belongItem)
 				.append("-->")
 				.append(belongModule)
 				.append("-->")
 				.append(name).toString();
 		href = Constant.WEB_ROOT +  "api/"+id+"/apiDetail/" ;
-		
-		
+
 		if(noticEmail != null && noticEmail.length > 0){
 			
 			//JSONObject one = this.apiDao.findAPIByNameAndCreateTime(name, now);
 			
-			String mailContent = new StringBuilder()
+			final String mailContent = new StringBuilder()
 			.append(title)
 			.append("  接口信息请访问：")
 			.append("<br>")
 			.append("<a href='"+href+"'>"+href+"</a>")
 			.append("<br><br>")
 			.toString();
-			for(String email : noticEmail){
-				MailUtils.asynSend(MailUtils.REG_NOREPLY, email,"["+title+"]新API使用信息", mailContent);
-				
-				JSONObject user = this.userDao.findUserByEmail(email);
-				
-				this.notify(companyId,user.getString("id"), userId, opreater, "编辑了API", name, id, title);
+
+			if(CommonUtils.isEmptyString(itemId)){
+				itemId = this.apiDao.findAPIById(id).optString("belongItemId");
+			}
+
+			final JSONObject confInf = sysConfDao.findBasicInfo4ItemId(companyId,itemId);
+			for(final String email : noticEmail){
+				final JSONObject user = this.userDao.findUserByEmail(email);
+				ThreadTask.getInstance().run(ThreadTask.commonThreadPool, new Runnable() {
+					@Override
+					public void run() {
+						MailUtils.asynSend(MailUtils.REG_NOREPLY, email,"["+title+"]新API使用信息", mailContent);
+
+						notifyUser(companyId,user.getString("id"), userId, opreater, "编辑了API", name, id, title);
+
+						try {
+							String wxPush = getAndSetAttribute("wxPush",request);
+							if("是".equals(wxPush)){
+                                //发送微信模板消息
+
+                                String authorName = userDao.findUserById(userId).optString("name");
+                                String wxAppId = confInf.optString("wxAppId");
+                                String wxAppSecret = confInf.optString("wxAppSecret");
+                                String openId = user.optString("openId");
+                                String itemName = belongItem;
+                                String pushTtitle = authorName+"编辑了API"+"：【"+title+"】";
+                                String updateInfo = other;
+                                String clickUrl = Constant.WEB_ROOT +  "api/"+id+"/apiDetail/openId/"+openId;
+                                WXService.sendTemplateMessage(wxAppId,wxAppSecret,openId,itemName,pushTtitle,updateInfo,clickUrl);
+                            }
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+
 			}
 		}
 		

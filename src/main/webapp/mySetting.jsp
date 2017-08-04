@@ -1,4 +1,5 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ page language="java" import="net.sf.json.JSONObject" pageEncoding="utf-8"%>
+<%@ page import="java.net.URLEncoder" %>
 
 <%@ taglib prefix="tranb" uri="/WEB-INF/tld/tranb-ocr.tld"%>
 
@@ -77,6 +78,24 @@
                     </div>
                 </div>
 
+                <%
+                    JSONObject user = (JSONObject) request.getAttribute("user");
+                    String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxcd07b16818cc75ce&redirect_uri=http%3a%2f%2fh5.vdangkou.com%2fjsp%2fcallback%2fwxAuth.jsp%3femail%3d"+user.optString("email")+"&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+                    String encodeUrl = URLEncoder.encode(url);
+                    request.setAttribute("url",url);
+                    request.setAttribute("encodeUrl",encodeUrl);
+                %>
+                <div class="form-item">
+                    <div class="form-label">
+                        <label for="link-wxAuth-settings#">微信绑定</label>
+                    </div>
+                    <div class="form-field form-text-field notification-field">
+                        <a style="color:gray" href="javaScript:void(0);" class="link-wxAuth-settings">打开微信，扫描下方二维码进行绑定</a>
+                        <p class="desc">
+                            <a href="${url}"><img src="http://pan.baidu.com/share/qrcode?w=150&h=150&url=${encodeUrl}"/></a>
+                        </p>
+                    </div>
+                </div>
 
                 <div class="form-buttons">
                     <button class="btn" id="btn-save" data-disable-with="正在保存..."

@@ -1,24 +1,21 @@
 package com.ydj.smart.api.web;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.ydj.smart.api.constant.Constant;
 import com.ydj.smart.api.dao.ApiDao;
 import com.ydj.smart.api.dao.UserDao;
 import com.ydj.smart.common.tools.CommonUtils;
 import com.ydj.smart.common.tools.WebUtils;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
 *
@@ -61,8 +58,11 @@ public class CommonInterceptor extends BaseAction implements HandlerInterceptor 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     	String url = request.getRequestURL().toString();
-    	
-    	
+
+    	//来自微信的api访问不进行拦截
+		if(url.contains("openId") && url.contains("apiDetail")){
+			return true;
+		}
     	
     	for(String excludedUrl : excludedUrls){
             if(url.contains(excludedUrl)){
