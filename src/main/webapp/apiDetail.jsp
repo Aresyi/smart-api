@@ -404,8 +404,8 @@ function go(id){
 										data-created-at="${tranb:longToDateString(one.createTime) }"
 										class="event-created-at">${tranb:longToDateString(one.createTime) }</a> <span
 										class="event-actor"> <a
-										href="/members/cf99cd6d64594a03bf758436dd69a217"
-										class="link-member" target="_blank">${one.creater }</a>
+										href="/smart-api/members/${one.createUserId}"
+										class="link-member" target="_blank">${one.creater}</a>
 									</span> <span class="event-action"> 创建了接口 </span> <span
 										class="event-text"> <span class="emphasize"> <a
 											href="/projects/dbe017efd44044619c565f3e38a48ba5/docs/33bed9f148144cb4a2b704d96ab74985"
@@ -434,7 +434,7 @@ function go(id){
 										data-created-at="${tranb:longToDateString(one.modifyTime) }"
 										class="event-created-at"> ${tranb:longToDateString(one.modifyTime) }</a> <span
 										class="event-actor"> <a
-										href="/members/cf99cd6d64594a03bf758436dd69a217"
+										href="/smart-api/members/${one.modifyUserId}"
 										class="link-member" target="_blank">${one.modifyer }</a>
 									</span> <span class="event-action"> 最后编辑 </span> <span
 										class="event-text"> <span class="emphasize"> <a

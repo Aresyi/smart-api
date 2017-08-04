@@ -76,7 +76,7 @@
 						</div>
 
 						<div class="member-control">
-							<a href="${cookie.roleId.value eq 8686 ? '/smart-api/user/update/' : 'javaScript:void(0);' }${user.id }" >
+							<a href="${(cookie.roleId.value eq 8686 || cookie.roleId.value eq 1) ? '/smart-api/user/update/' : 'javaScript:void(0);' }${user.id }" >
 								${user.roleId eq 0 ? "成员" : user.roleId eq 1 ? "管理员" :  user.roleId eq 8686 ? "Support" :"访客" }
 							</a>
 						</div>

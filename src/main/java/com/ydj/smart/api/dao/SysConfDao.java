@@ -1,19 +1,17 @@
 /** **/
 package com.ydj.smart.api.dao;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
-import org.springframework.stereotype.Repository;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.ydj.smart.common.nosql.BaseMongoDao;
 import com.ydj.smart.common.tools.CommonUtils;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -71,23 +69,23 @@ public class SysConfDao extends BaseMongoDao {
 	 * @author : Ares.yi
 	 * @createTime : 2016年7月27日 下午5:23:02
 	 */
-	public void saveSysConf4Item(String companyId,String itemId, String tokenName,String tokenDefValue,JSONArray dbList,JSONArray testSerList){
+	public void saveSysConf4Item(String companyId,String itemId, String tokenName,String tokenDefValue,JSONArray dbList,JSONArray testSerList,String wxAppId,String wxAppSecret){
 		DBCollection dbc = this.getSysConf4ItemCollection();
 		
 		DBObject q = new BasicDBObject();
 		q.put("companyId", companyId);
 		q.put("itemId", itemId);
 		
-		
+
 		if(CommonUtils.isNotEmptyString(tokenName)){
 			DBObject res = new BasicDBObject();
-			
+
 			res.put("tokenName", tokenName);
 			res.put("tokenDefValue", tokenDefValue);
-			
-			BasicDBObject doc = new BasicDBObject();  
+
+			BasicDBObject doc = new BasicDBObject();
 			doc.put("$set", res);
-			
+
 			dbc.update(q, doc, true, false);
 		}
 		
@@ -99,7 +97,7 @@ public class SysConfDao extends BaseMongoDao {
 			res.put("dbList", o);
 			
 			BasicDBObject doc = new BasicDBObject();  
-			doc.put("$addToSet", res);
+			doc.put("$set", res);
 			
 			dbc.update(q, doc, true, false);
 		}
@@ -113,8 +111,20 @@ public class SysConfDao extends BaseMongoDao {
 			res.put("testSerList", o);
 			
 			BasicDBObject doc = new BasicDBObject();  
-			doc.put("$addToSet", res);
+			doc.put("$set", res);
 			
+			dbc.update(q, doc, true, false);
+		}
+
+		if(CommonUtils.isNotEmptyString(wxAppId)){
+			DBObject res = new BasicDBObject();
+
+			res.put("wxAppId", wxAppId);
+			res.put("wxAppSecret", wxAppSecret);
+
+			BasicDBObject doc = new BasicDBObject();
+			doc.put("$set", res);
+
 			dbc.update(q, doc, true, false);
 		}
 		
@@ -172,7 +182,7 @@ public class SysConfDao extends BaseMongoDao {
 		q.put("itemId", itemId);
 		
 		DBObject fields =  new BasicDBObject();
-		fields.put("dbList", 0);
+//		fields.put("dbList", 0);
 		
 		DBObject res = dbc.findOne(q, fields);
 		

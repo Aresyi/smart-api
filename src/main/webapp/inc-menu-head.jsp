@@ -177,7 +177,7 @@
         <li>
             <a href="/smart-api/user/settings" data-stack-root="true" >个人设置</a>
         </li>
-		<c:if test="${cookie.roleId.value eq 8686}">
+		<c:if test="${cookie.roleId.value eq 8686 || cookie.roleId.value eq 1}">
        		 <li>
             	<a href="/smart-api/sys/settings" data-stack-root="true" >配置中心</a>
         	</li>

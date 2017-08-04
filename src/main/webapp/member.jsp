@@ -52,7 +52,7 @@
 											<c:forEach var="user" items="${ group.value}">
 												<li class="member" data-guid="${user.id }"
 													data-team-guid="2c17c1fc24584c0497dd0a6ac8a3ed18">
-													<a href="${cookie.roleId.value eq 8686 ? '/smart-api/user/update/' : 'javaScript:void(0);' }${user.id }" title="${user.name }" class="member-link" > 
+													<a href="${(cookie.roleId.value eq 8686 || cookie.roleId.value eq 1) ? '/smart-api/user/update/' : 'javaScript:void(0);' }${user.id }" title="${user.name }" class="member-link" >
 														<img class="avatar" src="assets/default_avatars/${user.avatar }" alt="${user.name }" /> 
 														<span class="name">${user.name }</span> 
 														<span class="role">${user.roleId eq 0 ? "成员" : user.roleId eq 1 ? "管理员" : "访客" }</span>

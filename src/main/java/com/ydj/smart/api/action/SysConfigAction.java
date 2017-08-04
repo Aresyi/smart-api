@@ -1,18 +1,16 @@
 /** **/
 package com.ydj.smart.api.action;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.ydj.smart.api.dao.SysConfDao;
+import com.ydj.smart.api.web.BaseAction;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.ydj.smart.api.dao.SysConfDao;
-import com.ydj.smart.api.web.BaseAction;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 
@@ -30,7 +28,7 @@ public class SysConfigAction extends BaseAction {
 	private SysConfDao sysConfDao;
 	
 	/**
-	 * 配置中心
+	 * 配置中心 选择项目
 	 * @param request
 	 * @param response
 	 * @return
@@ -42,11 +40,30 @@ public class SysConfigAction extends BaseAction {
 	@RequestMapping("settings")
 	public String settings(
 			HttpServletRequest request,HttpServletResponse response) throws Exception{
-		
 		return  "sysSetting";
 	}
-	
-	
+
+	/**
+	 * 配置中心
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 *
+	 * @author : Ares.yi
+	 * @createTime : 2016年7月14日 下午3:51:46
+	 */
+	@RequestMapping("settingsByItemId")
+	public String settings(
+			HttpServletRequest request,HttpServletResponse response,String itemId) throws Exception{
+		String companyId = this.getCompanyId(request, response);
+		JSONObject confInf = sysConfDao.findBasicInfo4ItemId(companyId,itemId);
+		request.setAttribute("confInf", confInf);
+		return  "sysSettingItem";
+	}
+
+
+
 	@RequestMapping("saveSettings")
 	public String saveSettings(
 			HttpServletRequest request,HttpServletResponse response) throws Exception{
@@ -67,6 +84,9 @@ public class SysConfigAction extends BaseAction {
 		
 		String hostName[] = getAndSetAttribute2("hostName",request);
 		String hostUrl[] = getAndSetAttribute2("hostUrl",request);
+
+		String wxAppId = this.getAndSetAttribute("wxAppId", request);
+		String wxAppSecret = this.getAndSetAttribute("wxAppSecret", request);
 
 		JSONArray dbList = new JSONArray();
 		if(dbChineseName != null && dbChineseName.length > 0){
@@ -95,7 +115,7 @@ public class SysConfigAction extends BaseAction {
 			}
 		}
 		
-		this.sysConfDao.saveSysConf4Item(companyId,itemId, tokenName,tokenDefValue,dbList,testSerList);
+		this.sysConfDao.saveSysConf4Item(companyId,itemId, tokenName,tokenDefValue,dbList,testSerList,wxAppId,wxAppSecret);
 		
 		return  "sysSetting";
 	}

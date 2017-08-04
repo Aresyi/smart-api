@@ -388,7 +388,13 @@ public class APIAction extends BaseAction {
 		}
 		
 		this.getResDataDesc(companyId,one);
-		
+
+		String modifyer = one.optString("modifyer", "");
+		if(CommonUtils.isNotEmptyString(modifyer)){
+			String modifyUserId = userDao.findUserByName(companyId, modifyer).optString("id");
+			one.put("modifyUserId",modifyUserId);
+		}
+
 		request.setAttribute("one", one);
 		
 		List<JSONObject> commentList = this.commentDao.findCommentById(CommentType.api, id);
