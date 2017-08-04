@@ -364,7 +364,7 @@ public class ApiDao extends BaseMongoDao {
 		}
 		
 		DBObject orderBy = new BasicDBObject();
-		orderBy.put("createTime", -1);
+		orderBy.put("modifyTime", -1);
 		
 		lists = this.change2ListJSONObject( apiCollection.find(cond).sort(orderBy).skip((page-1)*pageSize).limit(pageSize) );
 

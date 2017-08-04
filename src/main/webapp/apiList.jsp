@@ -145,10 +145,10 @@
 						<th width="5%">
 							编号
 						</th>
-						<th width="10%">
+						<th width="8%">
 							所在项目
 						</th>
-						<th width="10%">
+						<th width="8%">
 							所在模块
 						</th>
 						<th width="15%">
@@ -164,7 +164,7 @@
 							TOKEN
 						</th>
 						<th width="10%">
-							录入时间
+							更新时间
 						</th>
 						<th width="5%">
 							录入人
@@ -208,7 +208,7 @@
 								${obj.needCookie }&nbsp;
 							</td>
 							<td>
-								${tranb:longToDateString(obj.createTime) }
+								${tranb:longToDateString(obj.modifyTime) }
 							</td>
 							<td>
 								${obj.creater }&nbsp;
