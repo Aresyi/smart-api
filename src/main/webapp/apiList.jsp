@@ -7,6 +7,13 @@
 
 
 <script type="text/javascript">
+
+		$(function () {
+			setTimeout(function(){
+                $(".container").addClass("simple-stack-fluid");
+			},100);
+        });
+
 		function toChangeModule(obj){
 			var item = obj.value;
 			
