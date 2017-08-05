@@ -75,3 +75,23 @@
 		</table>
 	</div>
 </div>
+
+
+<div class="form-item sub">
+	<div class="form-label">
+		<label for="txt-email">版本管理</label>
+	</div>
+	<div class="form-field">
+		<table id='version_table'>
+			<tr align="center">
+				<td><a href="javaScript:void(0);" onclick="addRowVersion('','');">添加</a></td>
+			</tr>
+			<c:forEach items="${confInf.versionList}" var="item">
+				<tr>
+					<td><input onchange="changeFloatInput(this)" type='text' style='width:150px;'   autofocus='' name='version' id='version' autocomplete='off' value='${item.version}' data-validate='required;length:1,255;' data-validate-msg='请填写版本;最长10个字符'/></td>
+					<td><a href='javaScript:void(0);' onclick='removeRow(this.parentNode.parentNode);'>删除</a></td>
+				</tr>
+			</c:forEach>
+		</table>
+	</div>
+</div>

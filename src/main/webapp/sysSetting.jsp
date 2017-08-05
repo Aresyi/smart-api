@@ -25,7 +25,7 @@ function addRow2(name,value){
 	
 		  }
 
-function addRow3(name,value){
+		function addRow3(name,value){
 		     var root = document.getElementById("test_table")
 		     var newRow = root.insertRow();
 		     var newCell0 = newRow.insertCell();
@@ -37,6 +37,18 @@ function addRow3(name,value){
 		     newCell2.innerHTML = "<a href='javaScript:void(0);' onclick='removeRow(this.parentNode.parentNode);'>删除</a>";
 	
 		  }
+
+		function addRowVersion(name,value){
+			var root = document.getElementById("version_table")
+			var newRow = root.insertRow();
+			var newCell0 = newRow.insertCell();
+			var newCell1 = newRow.insertCell();
+			var newCell2 = newRow.insertCell();
+
+			newCell0.innerHTML = "<input type='text' style='width:150px;' placeholder='版本号' autofocus='' name='version' id='version' autocomplete='off' value='' data-validate='required;length:1,255' data-validate-msg='请填写版本;最长10个字符'/>";
+			newCell2.innerHTML = "<a href='javaScript:void(0);' onclick='removeRow(this.parentNode.parentNode);'>删除</a>";
+
+		}
 
 	
 		
@@ -55,6 +67,20 @@ function addRow3(name,value){
                 $(".form-item.sub").remove();
                 $form.after(html);
             },"text");
+        }
+
+        function changeFloatInput(e) {
+		    var str = $(e).val();
+		    if(str == ''){
+                alert("请输入浮点数");
+                return;
+			}
+            var b = /^\d+(\.\d+)?$/.test(str);
+            if(!b){
+                $(e).val("");
+                alert("请输入浮点数");
+			}
+
         }
 
         $(function () {

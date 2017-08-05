@@ -38,8 +38,36 @@
 							//alert(i);
 							sel.options.add(new Option(o[i],i));
 						}
+                        $("#belongModuleId").val('${belongModuleId}');
 				    }
 				});
+
+                //获取配置信息
+                $.ajax({
+                    url: '/smart-api/data/ajaxGetItemConf',
+                    type: 'GET',
+                    data:{itemId: item},
+                    dataType:"json",
+                    error: function(){
+                        alert('Error loading json data document');
+                    },
+                    success: function(resData){
+
+                        var o = eval(resData);//将json字符串转换成js对象
+                        if(!o.versionList && o.versionList.length == 0){
+                            return;
+                        }
+                        for (var i = 0;i< o.versionList.length;i++) { //循环json对象数组
+//                            alert(o.versionList[i].version);
+                            var version = o.versionList[i].version;
+//                            sel.options.add(new Option(version,version));
+                            $("#isDel").append("<option value='"+version+"'>"+version+"</option>");
+                        }
+                        $("#isDel").append("<option value='-1' >废弃</option>");
+                        $("#isDel").val(${isDel});
+
+                    }
+                });
 				
 			}else{
 				 var sel = document.getElementById("belongModuleId");
@@ -71,6 +99,10 @@
 			        root.removeChild(r);
 			    }
 		}
+
+		$(function () {
+            $('#belongItemId').trigger('change');
+        });
 		
 		</script>
 
@@ -111,14 +143,16 @@
 						<div style=" padding: 10px 10px; ">
 						<form action="api/searchApi" name="form" id="form" method="post">
 						<a>搜索API</a>
-							<select name="belongItemId" onchange="toChangeModule(this);">
+							<span style="color:rgba(85, 85, 85, 0.5)">项目:</span>
+							<select id="belongItemId" name="belongItemId" onchange="toChangeModule(this);">
 								<option disabled="disabled">-------------------</option>
 								<option value=""></option>
 								<c:forEach var="obj" items="${allItem }">
 									<option value="${obj.id }" ${obj.id == belongItemId ? 'selected' : ''}>${obj.name }</option>
-								</c:forEach>	
+								</c:forEach>
 							</select>
 							&nbsp;&nbsp;
+							<span style="color:rgba(85, 85, 85, 0.5)">模块:</span>
 							<select id="belongModuleId" name="belongModuleId">
 								<option disabled="disabled">-------------------</option>
 								<option value=""></option>
@@ -127,15 +161,31 @@
 								</c:forEach>
 							</select>
 							&nbsp;&nbsp;
-							<select id="isDel" name="isDel">
+
+							<span style="color:rgba(85, 85, 85, 0.5)">版本:</span>
+							<!-- (>) 大于 - $gt
+							(<) 小于 - $lt
+							(>=) 大于等于 - $gte
+							(<= ) 小于等于 - $lte -->
+							<select style="width:80px;" id="versionOperater" name="versionOperater">
+								<option disabled="disabled">-------------------</option>
+								<option value='' ></option>
+								<option value='$lte' ${versionOperater=='$lte' ? 'selected' : '' }> 小于等于 </option>
+								<option value='$lt' ${versionOperater=='$lt' ? 'selected' : '' }> 小于 </option>
+								<option value='$eq' ${versionOperater=='$eq' ? 'selected' : '' }> 等于 </option>
+								<option value='$gt' ${versionOperater=='$gt' ? 'selected' : '' }> 大于 </option>
+								<option value='$gte' ${versionOperater=='$gte' ? 'selected' : '' }> 大于等于 </option>
+
+							</select>
+							<select style="width:80px;" id="isDel" name="isDel">
 										<option disabled="disabled">-------------------</option>
-										<option value=''></option>
-										<option value='1' ${isDel==1 ? 'selected' : '' }>废弃</option>
+										<option value='' ></option>
+										<%--<option value='1' ${isDel==1 ? 'selected' : '' }>废弃</option>--%>
 							</select>
 							&nbsp;&nbsp;
-							<input type="text" id="keyword" name="keyword" value="${ keyword}" style='display: inline-block;   padding: 0;  height: 28px;'/> 
+							<input type="text" id="keyword" name="keyword" value="${ keyword}" style='display: inline-block;   padding: 0;  height: 28px;'/>
 							&nbsp;&nbsp;
-							
+
 							<input type="submit" value="查&nbsp&nbsp询" /> <font color="red">${message }</font>
 						</form>
 					</div>

@@ -88,6 +88,8 @@ public class SysConfigAction extends BaseAction {
 		String wxAppId = this.getAndSetAttribute("wxAppId", request);
 		String wxAppSecret = this.getAndSetAttribute("wxAppSecret", request);
 
+		String version[] = getAndSetAttribute2("version",request);
+
 		JSONArray dbList = new JSONArray();
 		if(dbChineseName != null && dbChineseName.length > 0){
 			for(int i=0;i<dbChineseName.length;i++){
@@ -114,8 +116,21 @@ public class SysConfigAction extends BaseAction {
 				testSerList.add(one);
 			}
 		}
+
+		JSONArray versionList = new JSONArray();
+		if(version != null && version.length > 0){
+			for(int i=0;i<version.length;i++){
+				JSONObject one = new JSONObject();
+				try {
+					one.put("version", Double.parseDouble(version[i]));
+				} catch (NumberFormatException e) {
+//					e.printStackTrace();
+				}
+				versionList.add(one);
+			}
+		}
 		
-		this.sysConfDao.saveSysConf4Item(companyId,itemId, tokenName,tokenDefValue,dbList,testSerList,wxAppId,wxAppSecret);
+		this.sysConfDao.saveSysConf4Item(companyId,itemId, tokenName,tokenDefValue,dbList,testSerList,wxAppId,wxAppSecret,versionList);
 		
 		return  "sysSetting";
 	}

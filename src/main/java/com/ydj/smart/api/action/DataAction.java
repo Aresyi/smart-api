@@ -1,19 +1,16 @@
 package com.ydj.smart.api.action;
 
-import java.io.PrintWriter;
+import com.ydj.smart.api.dao.DBTableDao;
+import com.ydj.smart.api.dao.SysConfDao;
+import com.ydj.smart.api.web.BaseAction;
+import net.sf.json.JSONObject;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import net.sf.json.JSONObject;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.ydj.smart.api.dao.DBTableDao;
-import com.ydj.smart.api.dao.SysConfDao;
-import com.ydj.smart.api.web.BaseAction;
+import java.io.PrintWriter;
 
 /**  
  *
@@ -140,6 +137,31 @@ public class DataAction extends BaseAction {
 		out.flush();
 		out.close(); 
 		
+		return null;
+	}
+
+	/**
+	 *
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("ajaxGetItemConf")
+	public String ajaxGetVersionList(
+			HttpServletRequest request,HttpServletResponse response) throws Exception {
+
+		String companyId = this.getCompanyId(request, response);
+
+		response.setContentType("application/json;charset=UTF-8");
+
+		String itemId = request.getParameter("itemId");
+
+		PrintWriter out = response.getWriter();
+		out.print(sysConfDao.findBasicInfo4ItemId(companyId,itemId));
+		out.flush();
+		out.close();
+
 		return null;
 	}
 }

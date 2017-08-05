@@ -11,6 +11,8 @@ import net.sf.json.JSONObject;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -69,13 +71,23 @@ public class SysConfDao extends BaseMongoDao {
 	 * @author : Ares.yi
 	 * @createTime : 2016年7月27日 下午5:23:02
 	 */
-	public void saveSysConf4Item(String companyId,String itemId, String tokenName,String tokenDefValue,JSONArray dbList,JSONArray testSerList,String wxAppId,String wxAppSecret){
+	public void saveSysConf4Item(String companyId,String itemId, String tokenName,String tokenDefValue,JSONArray dbList,JSONArray testSerList,String wxAppId,String wxAppSecret,JSONArray versionList){
 		DBCollection dbc = this.getSysConf4ItemCollection();
 		
 		DBObject q = new BasicDBObject();
 		q.put("companyId", companyId);
 		q.put("itemId", itemId);
-		
+
+		{
+			//清空list list类型 set 失败 故先删除在add
+			DBObject res = new BasicDBObject();
+			res.put("dbList", 1);
+			res.put("testSerList", 1);
+			res.put("versionList", 1);
+			BasicDBObject doc = new BasicDBObject();
+			doc.put("$unset", res);
+			dbc.update(q, doc, true, false);
+		}
 
 		if(CommonUtils.isNotEmptyString(tokenName)){
 			DBObject res = new BasicDBObject();
@@ -97,7 +109,7 @@ public class SysConfDao extends BaseMongoDao {
 			res.put("dbList", o);
 			
 			BasicDBObject doc = new BasicDBObject();  
-			doc.put("$set", res);
+			doc.put("$addToSet", res);
 			
 			dbc.update(q, doc, true, false);
 		}
@@ -111,7 +123,7 @@ public class SysConfDao extends BaseMongoDao {
 			res.put("testSerList", o);
 			
 			BasicDBObject doc = new BasicDBObject();  
-			doc.put("$set", res);
+			doc.put("$addToSet", res);
 			
 			dbc.update(q, doc, true, false);
 		}
@@ -127,7 +139,73 @@ public class SysConfDao extends BaseMongoDao {
 
 			dbc.update(q, doc, true, false);
 		}
+
+		if(versionList != null && versionList.size()>0){
+			DBObject res = new BasicDBObject();
+
+			DBObject o = new BasicDBObject();
+			o.put("$each", versionList);
+			res.put("versionList", o);
+
+			BasicDBObject doc = new BasicDBObject();
+			doc.put("$addToSet", res);
+
+			dbc.update(q, doc, true, false);
+		}
 		
+
+	}
+
+	public void addSysConfVersionList4Item(String companyId,String itemId,JSONArray versionList){
+		DBCollection dbc = this.getSysConf4ItemCollection();
+
+		DBObject q = new BasicDBObject();
+		q.put("companyId", companyId);
+		q.put("itemId", itemId);
+
+		if(versionList != null && versionList.size()>0){
+			DBObject res = new BasicDBObject();
+
+			DBObject o = new BasicDBObject();
+			o.put("$each", versionList);
+			res.put("versionList", o);
+
+			BasicDBObject doc = new BasicDBObject();
+			doc.put("$addToSet", res);
+
+			dbc.update(q, doc, true, false);
+		}
+
+	}
+
+	public void updateSysConfVersionList4Item(String companyId,String itemId,JSONArray versionList){
+		DBCollection dbc = this.getSysConf4ItemCollection();
+
+		DBObject q = new BasicDBObject();
+		q.put("companyId", companyId);
+		q.put("itemId", itemId);
+
+		{
+			//清空list list类型 set 失败 故先删除在add
+			DBObject res = new BasicDBObject();
+			res.put("versionList", 1);
+			BasicDBObject doc = new BasicDBObject();
+			doc.put("$unset", res);
+			dbc.update(q, doc, true, false);
+		}
+
+		if(versionList != null && versionList.size()>0){
+			DBObject res = new BasicDBObject();
+
+			DBObject o = new BasicDBObject();
+			o.put("$each", versionList);
+			res.put("versionList", o);
+
+			BasicDBObject doc = new BasicDBObject();
+			doc.put("$addToSet", res);
+
+			dbc.update(q, doc, true, false);
+		}
 
 	}
 	
@@ -185,8 +263,25 @@ public class SysConfDao extends BaseMongoDao {
 //		fields.put("dbList", 0);
 		
 		DBObject res = dbc.findOne(q, fields);
-		
-		return this.change2Bean(res, JSONObject.class);
+
+		JSONObject jsonObject = this.change2Bean(res, JSONObject.class);
+
+		//特殊字段排序 版本list排序
+		JSONArray versionList = jsonObject.optJSONArray("versionList");
+		if(versionList!=null && !versionList.isEmpty()){
+			Collections.sort(versionList, new Comparator() {
+				@Override
+				public int compare(Object o1, Object o2) {
+					if(o1 instanceof JSONObject && o2 instanceof JSONObject){
+						double v = ((JSONObject) o2).optDouble("version") - ((JSONObject) o1).optDouble("version");
+						return (int)Math.floor(v*10000);
+					}
+					return 0;
+				}
+			});
+		}
+
+		return jsonObject;
 	}
 	
 	/**

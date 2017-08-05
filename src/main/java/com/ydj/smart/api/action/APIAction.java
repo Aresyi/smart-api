@@ -82,7 +82,7 @@ public class APIAction extends BaseAction {
 	@RequestMapping("createAPI")
 	public String createAPI (
             HttpServletRequest request,HttpServletResponse response) throws Exception{
-		
+
 		this.getAndSetAllUser(request,response);
 		
 		return "createAPI";
@@ -126,7 +126,10 @@ public class APIAction extends BaseAction {
 		String itemId = getAndSetAttribute("itemId",request);
 		String db = getAndSetAttribute("db",request);
 		String table = getAndSetAttribute("table",request);
-		
+
+		String version = getAndSetAttribute("version",request);
+		String versionInput = getAndSetAttribute("versionInput",request);
+
 		if(StringUtils.isEmpty(url)){
 			message = "请填写请求URL";
 			request.setAttribute("message", message);
@@ -169,7 +172,35 @@ public class APIAction extends BaseAction {
 		
 		final String belongItem = module.optString("itemName");
 		String belongModule = module.optString("name");
-		
+
+
+		//version 处理
+		JSONArray versionList = new JSONArray();
+		if("其他".equals(version)){
+			//版本选择的是其他
+			if(CommonUtils.isEmptyString(versionInput)){
+				message = "请输入更新版本 ";
+				request.setAttribute("message", message);
+				return  this.createAPI(request,response);
+			}
+			JSONObject jsonObject = new JSONObject();
+			try {
+				jsonObject.put("version",Float.parseFloat(versionInput.trim()));
+			} catch (NumberFormatException e) {
+				if(CommonUtils.isEmptyString(versionInput)){
+					message = "请输入浮点数版本号 ";
+					request.setAttribute("message", message);
+					return this.createAPI(request,response);
+				}
+			}
+			versionList.add(jsonObject);
+			//将输入的版本记录到项目配置下
+			sysConfDao.addSysConfVersionList4Item(companyId,itemId,versionList);
+		}else{
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("version",Float.parseFloat(version));
+			versionList.add(jsonObject);
+		}
 		
 		JSONObject api = new JSONObject();
 		api.put("companyId", companyId);
@@ -216,6 +247,8 @@ public class APIAction extends BaseAction {
 		api.put("isHasHistory", 0);
 		api.put("creater", opreater);
 		api.put("createUserId", userId);
+
+		api.put("versionList",versionList);
 		
 		this.apiDao.saveAPI(api);
 		
@@ -337,9 +370,15 @@ public class APIAction extends BaseAction {
 		
 		String page_str = request.getParameter("page");
 		int page = CommonUtils.parseInt(page_str, 1);
-		
 
-		Pagination<JSONObject> pagerecords =this.apiDao.findApiByPage(companyId,belongItemId,belongModuleId,isDel,keyword,page,30);
+		String versionOperater = this.getAndSetAttribute("versionOperater",request);
+
+		if(CommonUtils.isEmptyString(versionOperater)){
+			versionOperater = "<=";
+		}
+
+
+		Pagination<JSONObject> pagerecords =this.apiDao.findApiByPage(companyId,belongItemId,belongModuleId,isDel,versionOperater,keyword,page,30);
 		request.setAttribute("pagerecords", pagerecords);
 		
 		if(CommonUtils.isNotEmptyString(belongItemId)){
@@ -531,13 +570,19 @@ public class APIAction extends BaseAction {
 		
 		JSONObject one = this.apiDao.findAPIById(id);
 		request.setAttribute("one", one);
-		request.setAttribute("belongItemId", one.getString("belongItemId"));
+		String belongItemId = one.getString("belongItemId");
+		request.setAttribute("belongItemId", belongItemId);
+		String companyId = one.getString("companyId");
+		request.setAttribute("companyId", companyId);
 		request.setAttribute("belongModuleId", one.getString("belongModuleId"));
 		
 		List<JSONObject> moduleList = this.apiDao.findModuleByItemId(one.getString("belongItemId"));
 		
 		request.setAttribute("moduleList", moduleList);
-		
+
+		JSONObject confInf = sysConfDao.findBasicInfo4ItemId(companyId, belongItemId);
+		request.setAttribute("confInf", confInf);
+
 		this.getAndSetAllUser(request,response);
 		
 		return  "editeAPI";
@@ -627,9 +672,15 @@ public class APIAction extends BaseAction {
 		String itemId = getAndSetAttribute("itemId",request);
 		String db = getAndSetAttribute("db",request);
 		String table = getAndSetAttribute("table",request);
-		
-		
+
+		String version = getAndSetAttribute("version",request);
+		String versionInput = getAndSetAttribute("versionInput",request);
+
 		JSONObject oldApi = this.apiDao.findAPIById(id);
+
+		if(CommonUtils.isEmptyString(itemId)){
+			itemId = oldApi.optString("belongItemId");
+		}
 		
 		if(StringUtils.isEmpty(url)){
 			message = "请填写请求URL";
@@ -673,8 +724,35 @@ public class APIAction extends BaseAction {
 		
 		final String belongItem = module.optString("itemName");
 		String belongModule = module.optString("name");
-		
-		
+
+		//version 处理
+		JSONArray versionList = new JSONArray();
+		if("其他".equals(version)){
+			//版本选择的是其他
+			if(CommonUtils.isEmptyString(versionInput)){
+				message = "请输入更新版本 ";
+				request.setAttribute("message", message);
+				return  this.toEditeAPI(id,request,response);
+			}
+			JSONObject jsonObject = new JSONObject();
+			try {
+				jsonObject.put("version",Float.parseFloat(versionInput.trim()));
+			} catch (NumberFormatException e) {
+				if(CommonUtils.isEmptyString(versionInput)){
+					message = "请输入浮点数版本号 ";
+					request.setAttribute("message", message);
+					return  this.toEditeAPI(id,request,response);
+				}
+			}
+			versionList.add(jsonObject);
+			//将输入的版本记录到项目配置下
+			sysConfDao.addSysConfVersionList4Item(companyId,itemId,versionList);
+		}else{
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("version",Float.parseFloat(version));
+			versionList.add(jsonObject);
+		}
+
 		JSONObject api = new JSONObject();
 		api.put("companyId", companyId);
 		api.put("name", name);
@@ -744,9 +822,14 @@ public class APIAction extends BaseAction {
 			
 			api.put("isHasHistory", 1);
 		}
-		
+
+		//更新api
 		this.apiDao.updateAPI(api,id);
-		
+
+		//添加更新版本
+		versionList.addAll(oldApi.optJSONArray("versionList"));
+		this.apiDao.addAPIVersion(id,versionList);
+
 		String noticEmail[] = request.getParameterValues("noticEmail");
 		
 		String href = "";

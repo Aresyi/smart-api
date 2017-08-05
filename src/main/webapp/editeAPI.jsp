@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 
 <%@ taglib prefix="tranb" uri="/WEB-INF/tld/tranb-ocr.tld"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%@ include file="/inc-common.jsp" %>
 
@@ -183,8 +184,15 @@
 				alert("请填写URL");
 			}
 		}
-		
-		
+
+        function changeVersion(e) {
+            if($(e).val() == '其他'){
+                $("#versionInput").show();
+            }else{
+                $("#versionInput").hide();
+            }
+
+        }
 		
 		
 	</script>
@@ -259,6 +267,22 @@
 								否
 							</option>
 						</select>
+					</td>
+				</tr>
+
+				<tr>
+					<td align="left">
+						更新版本
+					</td>
+					<td style='text-align: left;'>
+						<select id="version" name="version" onchange="changeVersion(this)">
+							<c:forEach items="${confInf.versionList}" var="item">
+								<option value="${item.version}" >${item.version}</option>
+							</c:forEach>
+							<option value="其他" >其他</option>
+						</select>
+						<input value="" name="versionInput" id="versionInput" <c:if test="${not empty confInf.versionList }">style="display:none"</c:if>/>
+						<span style="color:gray;">（记录此次修改对应于客户端哪个版本，便于客户端伙伴按版本查看接口更新）</span>
 					</td>
 				</tr>
 

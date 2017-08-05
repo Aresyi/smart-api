@@ -90,6 +90,30 @@ public class ApiDao extends BaseMongoDao {
 		}
 		apiCollection.update(query,obj);
 	}
+
+	/**
+	 * 添加API 更新版本
+	 * @param versionList 版本列表
+	 */
+	public void addAPIVersion(String id,JSONArray versionList){
+		DBCollection dbc = this.getAPICollection();
+		DBObject q = new BasicDBObject();
+		q.put("_id", new ObjectId(id));
+
+		if(versionList != null && versionList.size()>0){
+			DBObject res = new BasicDBObject();
+
+			DBObject o = new BasicDBObject();
+			o.put("$each", versionList);
+			res.put("versionList", o);
+
+			BasicDBObject doc = new BasicDBObject();
+			doc.put("$addToSet", res);
+
+			dbc.update(q, doc, true, false);
+		}
+
+	}
 	
 	
 	
@@ -316,7 +340,7 @@ public class ApiDao extends BaseMongoDao {
 	 * @param pageSize
 	 * @return
 	 */
-	public Pagination<JSONObject> findApiByPage(String companyId,String belongItemId,String belongModuleId,String isDel,String keyword,int page,int pageSize){
+	public Pagination<JSONObject> findApiByPage(String companyId,String belongItemId,String belongModuleId,String isDel,String versionOperater,String keyword,int page,int pageSize){
 		
 		DBObject cond = new BasicDBObject();
 		cond.put("companyId", companyId);
@@ -327,8 +351,22 @@ public class ApiDao extends BaseMongoDao {
 			cond.put("belongModuleId", belongModuleId);
 		}
 		if(!CommonUtils.isEmptyString(isDel)){
-			cond.put("isDel", isDel);
+			if("-1".equals(isDel)){
+				//查看废弃接口
+				cond.put("isDel", 1);
+			}else{
+				//按版本号查看接口
+				/**
+				 * (>) 大于 - $gt
+				 (<) 小于 - $lt
+				 (>=) 大于等于 - $gte
+				 (<= ) 小于等于 - $lte
+				 */
+				cond.put("versionList", new BasicDBObject("$elemMatch", new BasicDBObject("version",new BasicDBObject(versionOperater,Double.parseDouble(isDel)))));
+			}
+
 		}else{
+			//查看全部接口
 			cond.put("isDel", new BasicDBObject("$eq", null));
 		}
 		

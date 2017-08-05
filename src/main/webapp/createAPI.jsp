@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 
 <%@ taglib prefix="tranb" uri="/WEB-INF/tld/tranb-ocr.tld"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%@ include file="/inc-common.jsp" %>
 
@@ -114,10 +115,37 @@
 			            sel.options.add(new Option("",""));
 						for (var i in o) { //循环json对象数组
 							//alert(i);
-							sel.options.add(new Option(o[i],i));
+                            sel.options.add(new Option(o[i],i));
 						}
 				    }
 				});
+
+				//获取配置信息
+                $.ajax({
+                    url: '/smart-api/data/ajaxGetItemConf',
+                    type: 'GET',
+                    data:{itemId: item},
+                    dataType:"json",
+                    error: function(){
+                        alert('Error loading json data document');
+                    },
+                    success: function(resData){
+
+                        var o = eval(resData);//将json字符串转换成js对象
+                        if(!o.versionList && o.versionList.length == 0){
+                            return;
+                        }
+                        var sel = document.getElementById("version");
+                        sel.options.length=0;
+                        for (var i = 0;i< o.versionList.length;i++) { //循环json对象数组
+//                            alert(o.versionList[i].version);
+                            var version = o.versionList[i].version;
+                            sel.options.add(new Option(version,version));
+                        }
+                        sel.options.add(new Option("其他","其他"));
+                        $("#versionInput").hide();
+                    }
+                });
 				
 			}else{
 				 var sel = document.getElementById("belongModuleId");
@@ -191,7 +219,14 @@
 			}
 		}
 		
-		
+		function changeVersion(e) {
+		   if($(e).val() == '其他'){
+			   $("#versionInput").show();
+		   }else{
+               $("#versionInput").hide();
+		   }
+
+        }
 		
 		
 	</script>
@@ -265,6 +300,19 @@
 								否
 							</option>
 						</select>
+					</td>
+				</tr>
+
+				<tr>
+					<td align="left">
+						更新版本
+					</td>
+					<td style='text-align: left;'>
+						<select id="version" name="version" onchange="changeVersion(this)">
+							<option value="其他" >其他</option>
+						</select>
+						<input value="" name="versionInput" id="versionInput"/>
+						<span style="color:gray;">（记录此次修改对应于客户端哪个版本，便于客户端伙伴按版本查看接口更新）</span>
 					</td>
 				</tr>
 
