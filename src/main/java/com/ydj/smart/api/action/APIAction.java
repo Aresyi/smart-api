@@ -374,7 +374,7 @@ public class APIAction extends BaseAction {
 		String versionOperater = this.getAndSetAttribute("versionOperater",request);
 
 		if(CommonUtils.isEmptyString(versionOperater)){
-			versionOperater = "<=";
+			versionOperater = "$lte";
 		}
 
 
