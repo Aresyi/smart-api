@@ -183,7 +183,7 @@
         	</li>
 		</c:if>
         <li class="part-line"></li>
-        <li><a href="javascript:void();" target="_blank">最新功能</a></li>
+        <li><a href="https://github.com/Aresyi/smart-api/blob/master/FEATURES.md" target="_blank">最新功能</a></li>
         <li><a href="/smart-api/index/signOut" data-method="DELETE" rel="nofollow">退出</a></li>
     </ul>
 </script>
