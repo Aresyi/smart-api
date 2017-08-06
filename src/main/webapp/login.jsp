@@ -7,7 +7,8 @@
     $(function () {
         var email = cookie.get("emailRe");
         var password = cookie.get("passwordRe");
-        if(email && password){
+        var message = $("#message").html();
+        if(email && password &&!message){
             if(email.indexOf("%40")>-1){
                 email = email.replace("%40","@");
             }
@@ -51,7 +52,7 @@
                         <i class="arrow arrow-basic"></i>
                     </div>
 					<div>
-						<font color='red'>${message }</font>
+						<font id="message" color='red'>${message }</font>
 					</div>
                     <div class="form-item">
                         <div class="form-field">

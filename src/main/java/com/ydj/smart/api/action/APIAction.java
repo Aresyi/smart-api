@@ -195,7 +195,7 @@ public class APIAction extends BaseAction {
 			}
 			versionList.add(jsonObject);
 			//将输入的版本记录到项目配置下
-			sysConfDao.addSysConfVersionList4Item(companyId,itemId,versionList);
+			sysConfDao.addSysConfVersionList4Item(companyId,belongItemId,versionList);
 		}else{
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("version",Float.parseFloat(version));
