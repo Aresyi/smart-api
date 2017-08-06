@@ -43,6 +43,7 @@
 <script
 	src="/smart-api/assets/application-74c92b03cc0c853fd2e79cbf39f635a4.js"
 	type="text/javascript"></script>
+	<script src="/smart-api/assets/common.js"></script>
 <style type="text/css">
 html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
 	blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd,

@@ -2,6 +2,22 @@
 
 <%@ include file="/inc-common.jsp" %>
 
+<!-- 自动登录 -->
+<script>
+    $(function () {
+        var email = cookie.get("emailRe");
+        var password = cookie.get("passwordRe");
+        if(email && password){
+            if(email.indexOf("%40")>-1){
+                email = email.replace("%40","@");
+            }
+            $("#email").val(email);
+            $("#password").val(password);
+            $("#btn-signin").click();
+        }
+    });
+</script>
+
 <body>
     <div id="page-loading-mask"></div>
 
@@ -45,11 +61,11 @@
 
                     <div class="form-item">
                         <div class="form-field">
-                            <input type="password" name="password" placeholder="密码" data-validate="required;length:6" data-validate-msg="请填写你的登录密码" value=''/>
+                            <input type="password" name="password" id="password" placeholder="密码" data-validate="required;length:6" data-validate-msg="请填写你的登录密码" value=''/>
                         </div>
                         <div class="desc">
                             <p class="left">
-                                <label for="cb-remember"><input type="checkbox" name="remember_me" id="cb-remember" checked /> 下次自动登录</label>
+                                <label for="cb-remember"><input type="checkbox" name="remember_me" id="cb-remember" checked  value="1"/> 下次自动登录</label>
                             </p>
                             <p class="right">
                                 <span class="forgot-pw"><a href="#">忘记密码了？</a></span>

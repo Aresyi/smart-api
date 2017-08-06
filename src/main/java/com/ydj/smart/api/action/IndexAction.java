@@ -1,23 +1,22 @@
 /** **/
 package com.ydj.smart.api.action;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import net.sf.json.JSONObject;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.ydj.smart.api.constant.Constant;
 import com.ydj.smart.api.dao.ApiDao;
 import com.ydj.smart.api.dao.SysDao;
 import com.ydj.smart.api.dao.UserDao;
 import com.ydj.smart.api.web.BaseAction;
+import com.ydj.smart.common.tools.CommonUtils;
 import com.ydj.smart.common.tools.CookieUtils;
 import com.ydj.smart.common.tools.StringUtils;
+import net.sf.json.JSONObject;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * 
@@ -63,7 +62,15 @@ public class IndexAction extends BaseAction {
 		
 		String email = request.getParameter("email");
 		String pass = request.getParameter("password");
-		
+		String rememberMe = request.getParameter("remember_me");
+		int cookieAge = -1;
+		if(CommonUtils.isNotEmptyString(rememberMe) && rememberMe.equals("1")){
+			cookieAge = 60*60*24*7;
+		}else{
+		}
+		response.addCookie(CookieUtils.newCookie("emailRe",email,cookieAge));
+		response.addCookie(CookieUtils.newCookie("passwordRe",pass,cookieAge));
+
 		JSONObject user = this.userDao.findUserByEmail(email); ;
 		
 		
@@ -175,6 +182,8 @@ public class IndexAction extends BaseAction {
 	public String signOut(HttpServletRequest request,HttpServletResponse response) throws Exception{
 		
 		CookieUtils.removeCookie(response, "adminuser");
+		CookieUtils.removeCookie(response, "emailRe");
+		CookieUtils.removeCookie(response, "passwordRe");
 		request.getSession().invalidate();
 		
 		return  "login";
