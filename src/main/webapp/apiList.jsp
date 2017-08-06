@@ -43,6 +43,7 @@
 				});
 
                 //获取配置信息
+				$(".tempOption").remove();
                 $.ajax({
                     url: '/smart-api/data/ajaxGetItemConf',
                     type: 'GET',
@@ -55,15 +56,16 @@
 
                         var o = eval(resData);//将json字符串转换成js对象
                         if(!o.versionList && o.versionList.length == 0){
+                            $("#isDel").append("<option class='tempOption' value='-1' >废弃</option>");
                             return;
                         }
                         for (var i = 0;i< o.versionList.length;i++) { //循环json对象数组
 //                            alert(o.versionList[i].version);
                             var version = o.versionList[i].version;
 //                            sel.options.add(new Option(version,version));
-                            $("#isDel").append("<option value='"+version+"'>"+version+"</option>");
+                            $("#isDel").append("<option class='tempOption' value='"+version+"'>"+version+"</option>");
                         }
-                        $("#isDel").append("<option value='-1' >废弃</option>");
+                        $("#isDel").append("<option class='tempOption' value='-1' >废弃</option>");
                         $("#isDel").val(${isDel});
 
                     }

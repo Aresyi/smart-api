@@ -1,28 +1,28 @@
 /** **/
 package com.ydj.smart.api.action;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import net.sf.json.JSONObject;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.ydj.smart.api.constant.Constant;
 import com.ydj.smart.api.dao.ApiDao;
+import com.ydj.smart.api.dao.SysConfDao;
 import com.ydj.smart.api.dao.SysDao;
 import com.ydj.smart.api.dao.UserDao;
 import com.ydj.smart.api.web.BaseAction;
 import com.ydj.smart.common.tools.CommonUtils;
 import com.ydj.smart.common.tools.MailUtils;
+import net.sf.json.JSONObject;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -44,7 +44,9 @@ public class UserAction extends BaseAction {
 	
 	@Resource
 	private SysDao sysDao;
-	
+
+	@Resource
+	private SysConfDao sysConfDao;
 	/**
 	 * 邀请添加用户
 	 * @param request
@@ -378,6 +380,43 @@ public class UserAction extends BaseAction {
 		request.setAttribute("user", user);
 		
 		return  "mySetting";
+	}
+
+	/**
+	 * 个人设置 获取微信绑定地址
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 *
+	 * @author : Ares.yi
+	 * @createTime : 2016年7月14日 下午3:51:46
+	 */
+	@RequestMapping("getWxAuthUrl")
+	@ResponseBody
+	public JSONObject getWxAuthUrl(
+			HttpServletRequest request,HttpServletResponse response,String itemId) throws Exception{
+		String userId = this.getUserId(request,response);
+
+		JSONObject result = new JSONObject();
+		JSONObject user = this.userDao.findUserById(userId);
+		JSONObject sysConf = sysConfDao.findBasicInfo4ItemId(user.optString("companyId"), itemId);
+		String wxAppId = sysConf.optString("wxAppId");
+		String wxAuthCallackUrl = sysConf.optString("wxAuthCallackUrl");
+
+		if(CommonUtils.isEmptyString(wxAppId)){
+			result.put("errorMsg","未配置微信不能绑定");
+			return result;
+		}
+		String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+wxAppId+"&redirect_uri="+wxAuthCallackUrl+"%3fitemId%3d"+itemId+"%26email%3d"+user.optString("email")+"&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+		String encodeUrl = URLEncoder.encode(url);
+		request.setAttribute("url",url);
+		request.setAttribute("encodeUrl",encodeUrl);
+
+		result.put("url",url);
+		result.put("encodeUrl",encodeUrl);
+
+		return  result;
 	}
 	
 	/**

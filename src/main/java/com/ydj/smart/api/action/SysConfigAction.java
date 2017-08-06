@@ -87,6 +87,9 @@ public class SysConfigAction extends BaseAction {
 
 		String wxAppId = this.getAndSetAttribute("wxAppId", request);
 		String wxAppSecret = this.getAndSetAttribute("wxAppSecret", request);
+		String wxAuthCallackUrl = this.getAndSetAttribute("wxAuthCallackUrl", request);
+		String wxTemplateId = this.getAndSetAttribute("wxTemplateId", request);
+		String wxTemplateData = this.getAndSetAttribute("wxTemplateData", request);
 
 		String version[] = getAndSetAttribute2("version",request);
 
@@ -130,7 +133,7 @@ public class SysConfigAction extends BaseAction {
 			}
 		}
 		
-		this.sysConfDao.saveSysConf4Item(companyId,itemId, tokenName,tokenDefValue,dbList,testSerList,wxAppId,wxAppSecret,versionList);
+		this.sysConfDao.saveSysConf4Item(companyId,itemId, tokenName,tokenDefValue,dbList,testSerList,wxAppId,wxAppSecret,wxAuthCallackUrl,wxTemplateId,wxTemplateData,versionList);
 		
 		return  "sysSetting";
 	}

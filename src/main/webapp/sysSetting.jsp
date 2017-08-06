@@ -83,6 +83,14 @@ function addRow2(name,value){
 
         }
 
+        function changeWxCallbackDefault(e) {
+            if($(e).val() == '1'){
+		        $("#wxAuthCallackUrl").val("http://www.179smart.com/smart-api/callack/wxAuthDefault");
+			}else{
+                $("#wxAuthCallackUrl").val("");
+			}
+
+        }
         $(function () {
             $("#itemId option:first").prop("selected", 'selected');
             $('#itemId').trigger('change');

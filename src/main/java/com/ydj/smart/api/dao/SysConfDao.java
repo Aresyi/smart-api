@@ -71,7 +71,9 @@ public class SysConfDao extends BaseMongoDao {
 	 * @author : Ares.yi
 	 * @createTime : 2016年7月27日 下午5:23:02
 	 */
-	public void saveSysConf4Item(String companyId,String itemId, String tokenName,String tokenDefValue,JSONArray dbList,JSONArray testSerList,String wxAppId,String wxAppSecret,JSONArray versionList){
+	public void saveSysConf4Item(String companyId,String itemId, String tokenName,String tokenDefValue,JSONArray dbList,JSONArray testSerList,
+								 String wxAppId,String wxAppSecret,String wxAuthCallackUrl,String wxTemplateId,String wxTemplateData,
+								 JSONArray versionList){
 		DBCollection dbc = this.getSysConf4ItemCollection();
 		
 		DBObject q = new BasicDBObject();
@@ -133,6 +135,9 @@ public class SysConfDao extends BaseMongoDao {
 
 			res.put("wxAppId", wxAppId);
 			res.put("wxAppSecret", wxAppSecret);
+			res.put("wxAuthCallackUrl", wxAuthCallackUrl);
+			res.put("wxTemplateId", wxTemplateId);
+			res.put("wxTemplateData", wxTemplateData);
 
 			BasicDBObject doc = new BasicDBObject();
 			doc.put("$set", res);
@@ -265,7 +270,9 @@ public class SysConfDao extends BaseMongoDao {
 		DBObject res = dbc.findOne(q, fields);
 
 		JSONObject jsonObject = this.change2Bean(res, JSONObject.class);
-
+		if(jsonObject == null){
+			return null;
+		}
 		//特殊字段排序 版本list排序
 		JSONArray versionList = jsonObject.optJSONArray("versionList");
 		if(versionList!=null && !versionList.isEmpty()){

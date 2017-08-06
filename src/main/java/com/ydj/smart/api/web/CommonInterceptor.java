@@ -59,8 +59,13 @@ public class CommonInterceptor extends BaseAction implements HandlerInterceptor 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     	String url = request.getRequestURL().toString();
 
+    	//微信授权smart-api/callback/wxAuth
+		if(url.contains("/smart-api/callback/wxAuth")){
+			return true;
+		}
+
     	//来自微信的api访问不进行拦截
-		if(url.contains("openId") && url.contains("apiDetail")){
+		if(url.contains("/apiDetail/openId")){
 			return true;
 		}
     	

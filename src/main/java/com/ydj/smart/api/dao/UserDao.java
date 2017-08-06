@@ -344,13 +344,14 @@ public class UserDao extends BaseMongoDao {
 	 * @param id
 	 * @param openId
 	 */
-	public void saveOrUpdateUserOpenId(String id, String openId){
+	public void saveOrUpdateUserOpenId(String id, String openId,String openIdItemId){
 		DBCollection userCollection = this.getUserCollection();
 		DBObject query = new BasicDBObject();
 		query.put("_id", new ObjectId(id));
 
 		DBObject res = new BasicDBObject();
 		res.put("openId", openId);
+		res.put("openIdItemId", openIdItemId);
 
 		BasicDBObject doc = new BasicDBObject();
 		doc.put("$set", res);

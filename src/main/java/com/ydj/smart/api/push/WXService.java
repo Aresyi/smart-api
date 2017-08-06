@@ -36,6 +36,8 @@ public class WXService {
                                         String itemName,
                                         String title,
                                         String updateInfo,
+                                        String templateId,
+                                        String templateData,
                                         String clickUrl) throws Exception {
 
         updateInfo = updateInfo.replaceAll("\n","");
@@ -44,14 +46,21 @@ public class WXService {
         String postUrl = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+getAccessToken(appId,secret);
         JSONObject json = new JSONObject();
         json.put("touser",openId);
-        json.put("template_id","_m9XhMv9M0VOCwCX6BnKmTB0OlYg21crH_MeKkD7s2A");
+        json.put("template_id",templateId);
+//        json.put("template_id","_m9XhMv9M0VOCwCX6BnKmTB0OlYg21crH_MeKkD7s2A");
         json.put("url",clickUrl);
-        JSONObject data = new JSONObject();
-        data.put("first", JSONObject.fromObject("{value:\""+title+"\",colr:\"#173177\"}"));
-        data.put("keyword1", JSONObject.fromObject("{value:\""+itemName+"项目\",colr:\"#173177\"}"));
-        data.put("keyword2", JSONObject.fromObject("{value:\""+"已更新"+"\",colr:\"#173177\"}"));
-        data.put("remark", JSONObject.fromObject("{value:\"修改说明："+updateInfo.trim()+"\",colr:\"#173177\"}"));
-        json.put("data",data);
+        templateData = templateData.trim();
+        templateData = templateData.replace("\n","");
+        templateData = templateData.replace("\n","");
+        templateData = templateData.replace("$itemName",itemName);
+        templateData = templateData.replace("$title",title);
+        templateData = templateData.replace("$updateInfo",updateInfo);
+//        JSONObject data = new JSONObject();
+//        data.put("first", JSONObject.fromObject("{value:\""+title+"\",colr:\"#173177\"}"));
+//        data.put("keyword1", JSONObject.fromObject("{value:\""+itemName+"项目\",colr:\"#173177\"}"));
+//        data.put("keyword2", JSONObject.fromObject("{value:\""+"已更新"+"\",colr:\"#173177\"}"));
+//        data.put("remark", JSONObject.fromObject("{value:\"修改说明："+updateInfo.trim()+"\",colr:\"#173177\"}"));
+        json.put("data",JSONObject.fromObject(templateData));
         String result = HttpUtils.postJSON(postUrl, json.toString());
         JSONObject jsonObject = JSONObject.fromObject(result);
         int errcode = jsonObject.optInt("errcode");

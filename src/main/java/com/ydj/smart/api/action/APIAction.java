@@ -123,7 +123,7 @@ public class APIAction extends BaseAction {
 		String para_caseVal[] = getAndSetAttribute2("para_caseVal",request);
 		
 		
-		String itemId = getAndSetAttribute("itemId",request);
+		final String itemId = getAndSetAttribute("itemId",request);
 		String db = getAndSetAttribute("db",request);
 		String table = getAndSetAttribute("table",request);
 
@@ -279,6 +279,7 @@ public class APIAction extends BaseAction {
 			.toString();
 
 			final JSONObject confInf = sysConfDao.findBasicInfo4ItemId(companyId,itemId);
+			final String wxPush = getAndSetAttribute("wxPush",request);
 			final String id = one.getString("id");
 			for(final String email : noticEmail){
 				final JSONObject user = this.userDao.findUserByEmail(email);
@@ -290,8 +291,9 @@ public class APIAction extends BaseAction {
 						notifyUser(companyId,user.getString("id"), userId, opreater, "新建API", name, one.getString("id"), title);
 
 						try {
-							String wxPush = getAndSetAttribute("wxPush",request);
 							if("是".equals(wxPush)){
+								String wxTemplateId = confInf.optString("wxTemplateId");
+								String wxTemplateData = confInf.optString("wxTemplateData");
 								//发送微信模板消息
 								String authorName = userDao.findUserById(userId).optString("name");
 								String wxAppId = confInf.optString("wxAppId");
@@ -301,7 +303,7 @@ public class APIAction extends BaseAction {
 								String pushTtitle = authorName+"编辑了API"+"：【"+title+"】";
 								String updateInfo = other;
 								String clickUrl = Constant.WEB_ROOT +  "api/"+id+"/apiDetail/openId/"+openId;
-								WXService.sendTemplateMessage(wxAppId,wxAppSecret,openId,itemName,pushTtitle,updateInfo,clickUrl);
+								WXService.sendTemplateMessage(wxAppId,wxAppSecret,openId,itemName,pushTtitle,updateInfo,wxTemplateId,wxTemplateData,clickUrl);
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -516,16 +518,6 @@ public class APIAction extends BaseAction {
 			session.setAttribute("userId",userId);
 			session.setAttribute("companyId",companyId);
 			session.setAttribute(Constant.WEBSOCKET_USERID,userId);
-
-			Object referer = session.getAttribute("Referer");
-			if(referer != null  ){
-				String s = referer.toString();
-				if(!"".equals(s) && !s.contains("login") && !s.contains("signOut")){
-					response.sendRedirect(s);
-					return null;
-				}
-			}
-
 
 			return this.apiDetail(id,history,request,response);
 		}
@@ -858,6 +850,7 @@ public class APIAction extends BaseAction {
 			}
 
 			final JSONObject confInf = sysConfDao.findBasicInfo4ItemId(companyId,itemId);
+			final String wxPush = getAndSetAttribute("wxPush",request);
 			for(final String email : noticEmail){
 				final JSONObject user = this.userDao.findUserByEmail(email);
 				ThreadTask.getInstance().run(ThreadTask.commonThreadPool, new Runnable() {
@@ -868,10 +861,10 @@ public class APIAction extends BaseAction {
 						notifyUser(companyId,user.getString("id"), userId, opreater, "编辑了API", name, id, title);
 
 						try {
-							String wxPush = getAndSetAttribute("wxPush",request);
 							if("是".equals(wxPush)){
                                 //发送微信模板消息
-
+								String wxTemplateId = confInf.optString("wxTemplateId");
+								String wxTemplateData = confInf.optString("wxTemplateData");
                                 String authorName = userDao.findUserById(userId).optString("name");
                                 String wxAppId = confInf.optString("wxAppId");
                                 String wxAppSecret = confInf.optString("wxAppSecret");
@@ -880,7 +873,7 @@ public class APIAction extends BaseAction {
                                 String pushTtitle = authorName+"编辑了API"+"：【"+title+"】";
                                 String updateInfo = other;
                                 String clickUrl = Constant.WEB_ROOT +  "api/"+id+"/apiDetail/openId/"+openId;
-                                WXService.sendTemplateMessage(wxAppId,wxAppSecret,openId,itemName,pushTtitle,updateInfo,clickUrl);
+                                WXService.sendTemplateMessage(wxAppId,wxAppSecret,openId,itemName,pushTtitle,updateInfo,wxTemplateId,wxTemplateData,clickUrl);
                             }
 						} catch (Exception e) {
 							e.printStackTrace();

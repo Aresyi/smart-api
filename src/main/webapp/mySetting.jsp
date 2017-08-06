@@ -78,21 +78,47 @@
                     </div>
                 </div>
 
-                <%
-                    JSONObject user = (JSONObject) request.getAttribute("user");
-                    String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxcd07b16818cc75ce&redirect_uri=http%3a%2f%2fh5.vdangkou.com%2fjsp%2fcallback%2fwxAuth.jsp%3femail%3d"+user.optString("email")+"&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
-                    String encodeUrl = URLEncoder.encode(url);
-                    request.setAttribute("url",url);
-                    request.setAttribute("encodeUrl",encodeUrl);
-                %>
+                <script>
+                    function changeItem(selectElement) {
+                        $("#qrImg img").hide();
+                        var selectedItemId = $(selectElement).val();
+                        if(selectedItemId == ""){
+                            return;
+                        }
+                        $.get("user/getWxAuthUrl?itemId="+selectedItemId,function (data) {
+                            if(data.errorMsg){
+                                alert(data.errorMsg);
+                            }else{
+                                $("#qrImg").attr("href",data.url);
+                                $("#qrImg img").attr("src","http://pan.baidu.com/share/qrcode?w=150&h=150&url="+data.encodeUrl);
+                                $("#qrImg img").show();
+                            }
+                        },"json");
+                    }
+
+                    $(function () {
+                        $("#itemId").trigger('change');
+                    });
+                </script>
                 <div class="form-item">
                     <div class="form-label">
                         <label for="link-wxAuth-settings#">微信绑定</label>
                     </div>
+
+                    <div class="form-field">
+                        <select style="margin-top: 8px;" id="itemId" name="itemId" autofocus data-validate="required;" onchange="changeItem(this)">
+                            <option value="">请选择</option>
+                            <c:forEach var="obj" items="${allItem }">
+                                <option value="${obj.id }" ${obj.id == user.openIdItemId ? "selected" : "" }>${obj.name }</option>
+                            </c:forEach>
+                        </select>
+                        <c:if test="${not empty user.openIdItemId}"><span style="color:gray">已绑定</span></c:if>
+                    </div>
+
                     <div class="form-field form-text-field notification-field">
-                        <a style="color:gray" href="javaScript:void(0);" class="link-wxAuth-settings">打开微信，扫描下方二维码进行绑定</a>
+                        <a style="color:gray" href="javaScript:void(0);" class="link-wxAuth-settings">打开微信，扫描下方二维码进行绑定，只能绑定一个项目，重新绑定会重置已有绑定</a>
                         <p class="desc">
-                            <a href="${url}"><img src="http://pan.baidu.com/share/qrcode?w=150&h=150&url=${encodeUrl}"/></a>
+                            <a id="qrImg"  href="#"><img style="display: none;" src=""/></a>
                         </p>
                     </div>
                 </div>
