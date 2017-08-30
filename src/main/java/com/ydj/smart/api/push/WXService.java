@@ -42,6 +42,7 @@ public class WXService {
 
         updateInfo = updateInfo.replaceAll("\n","");
         updateInfo = updateInfo.replaceAll("\r","");
+        updateInfo = updateInfo.replaceAll("\"","");
 
         String postUrl = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+getAccessToken(appId,secret);
         JSONObject json = new JSONObject();

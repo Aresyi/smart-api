@@ -73,13 +73,41 @@
                }   
            })   
        }   
-</script>  
+</script>
+<style>
+    .header .logo .name{
+        display: inline-block;
+        max-width: 10em;
+        font-family: Bodoni, Verdana, 'Helvetica Neue', Helvetica, 'PingFang SC', 'Lantinghei SC', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif;
+        vertical-align: middle;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 20px
+    }
+    .header:before, .header:after{
+        display: table;
+        content: ""
+    }
 
-<div class="header" style="width: 60%">
+    .header .link-team-menu::after{
+        content: "\f004";
+        display: inline-block;
+        font: normal normal normal 14px/13px 'Tower';
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        transform: translate(0, 0);
+        vertical-align: middle;
+    }
+
+</style>
+
+<div class="header">
     <h1 class="logo">
         <a href="javascript:;" class="link-team-menu">
-            <span class="name">${empty itemName ? '产品' : itemName }</span>
-            <i class="twr twr-caret-down"></i>
+            <span  class="name">${empty itemName ? '产品' : itemName }</span>
+            <%--<i class="twr twr-caret-down"></i>--%>
         </a>
     </h1>
 
@@ -118,6 +146,10 @@
         
         <li id="nav-me">
             <a href="/smart-api/user/settings"  data-stack-root>我自己</a>
+        </li>
+
+        <li class="" id="nav-upgrade">
+            <a  style="color: #F2A622;" href="https://github.com/Aresyi/smart-api/blob/master/FEATURES.md" data-tower-pro="header-upgrade-ad" target="_blank">新功能</a>
         </li>
     </ul>
 
