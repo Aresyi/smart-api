@@ -9707,13 +9707,13 @@ div.comment.comment-form.edit .form-field {
 	padding:4px 5px;
 	text-indent:-999px;
 	overflow:hidden;
-	background-image:url(/assets/todo-actions-icon-92b9af41f359b33f9878abc2aa475e04.png);
+	background-image:url(todo-actions-icon-92b9af41f359b33f9878abc2aa475e04.png);
 	background-repeat:no-repeat;
 	background-size:60px auto
 }
 @media all and (-webkit-min-device-pixel-ratio: 1.5), all and (-o-min-device-pixel-ratio: 3 / 2), all and (min--moz-device-pixel-ratio: 1.5), all and (min-device-pixel-ratio: 1.5) {
 	.todolist .actions a {
-		background-image:url(/assets/todo-actions-icon@2x-70cb9e1907461b946e8ac936c6f5812a.png);
+		background-image:url(todo-actions-icon@2x-70cb9e1907461b946e8ac936c6f5812a.png);
 		background-size:60px auto
 	}
 }
