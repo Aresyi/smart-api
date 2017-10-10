@@ -36,7 +36,7 @@
 <link rel="icon" href="/smart-api/assets/favicon.ico" sizes="64x64" />
 <link rel="icon" href="/smart-api/assets/favicon.ico" sizes="128x128" />
 <link rel="apple-touch-icon-precomposed" href="/smart-api/assets/logo-sign-dff6b8806ae5cfa80c84502bb5e07c17.png" />
-<link rel="stylesheet" href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css">
+<link rel="stylesheet" href="/smart-api/assets/font-awesome.css">
 <link
 	href="/smart-api/assets/application-39d12b990af1fdb03ea3fd8788854c4d.css"
 	media="all" rel="stylesheet" type="text/css" />

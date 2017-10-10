@@ -114,30 +114,30 @@
 </div>
 
 
-<script type="text/javascript" src="//res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js">
-</script>
-<script type="text/javascript">
-(function() {
-    new WxLogin({
-        id: 'wechat-login',
-        appid: 'wxa2402e6aefdd4747',
-        scope: 'snsapi_login',
-        redirect_uri: 'https://tower.im/auth/open_wechat/callback',
-        href: '//tower.im/wechat-signin.css',
-        state: '46be517d383943c7be6e5479ec65d7d7c14edad047fd7e8d'
-    });
-    $('#wechat-login iframe').height(300);
-})();
-</script>
+<%--<script type="text/javascript" src="//res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js">--%>
+<%--</script>--%>
+<%--<script type="text/javascript">--%>
+<%--(function() {--%>
+    <%--new WxLogin({--%>
+        <%--id: 'wechat-login',--%>
+        <%--appid: 'wxa2402e6aefdd4747',--%>
+        <%--scope: 'snsapi_login',--%>
+        <%--redirect_uri: 'https://tower.im/auth/open_wechat/callback',--%>
+        <%--href: '//tower.im/wechat-signin.css',--%>
+        <%--state: '46be517d383943c7be6e5479ec65d7d7c14edad047fd7e8d'--%>
+    <%--});--%>
+    <%--$('#wechat-login iframe').height(300);--%>
+<%--})();--%>
+<%--</script>--%>
 
-<script type="text/javascript" src="//g.alicdn.com/dingding/dinglogin/0.0.2/ddLogin.js">
-</script>
-<input type="hidden" id="dingtalk-sns-url" value="https%3A%2F%2Foapi.dingtalk.com%2Fconnect%2Foauth2%2Fsns_authorize%3Fappid%3Ddingoacew1vv45xrvaorzl%26response_type%3Dcode%26scope%3Dsnsapi_login%26redirect_uri%3Dhttps%3A%2F%2Ftower.im%2Fdingtalk%2Fqr">
+<%--<script type="text/javascript" src="//g.alicdn.com/dingding/dinglogin/0.0.2/ddLogin.js">--%>
+<%--</script>--%>
+<%--<input type="hidden" id="dingtalk-sns-url" value="https%3A%2F%2Foapi.dingtalk.com%2Fconnect%2Foauth2%2Fsns_authorize%3Fappid%3Ddingoacew1vv45xrvaorzl%26response_type%3Dcode%26scope%3Dsnsapi_login%26redirect_uri%3Dhttps%3A%2F%2Ftower.im%2Fdingtalk%2Fqr">--%>
 
-    </div>
+    <%--</div>--%>
 
-    <input type="hidden" id="d18n-enabled" value="false" />
-    <input type="hidden" id="server-time" value="2016-07-01 10:54:06" />
+    <%--<input type="hidden" id="d18n-enabled" value="false" />--%>
+    <%--<input type="hidden" id="server-time" value="2016-07-01 10:54:06" />--%>
 
 
 
