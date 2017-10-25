@@ -1,6 +1,14 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ page import="com.ydj.smart.api.constant.Constant" %>
 
 <%@ include file="/inc-common.jsp" %>
+
+<%
+    if(!request.getRequestURL().toString().contains(Constant.WEB_ROOT)){
+        response.sendRedirect(Constant.WEB_ROOT);
+        return;
+    }
+%>
 
 <!-- 自动登录 -->
 <script>
