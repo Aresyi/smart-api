@@ -26,7 +26,7 @@ Smart-api是一个极简API管理平台，提供API的"发布&管理"、"数据�
 - 7、即时更新：数据字典随数据库表结构实时同步更新展现；
 
 #### 1.3、如何使用
-- 1、直接访问由作者维护的[http://www.179smart.com/smart-api/](http://www.179smart.com/smart-api/)(账号：admin@17smart.com；密码：654321)
+- 1、直接访问由作者维护的[http://www.179smart.com:8765/smart-api/](http://www.179smart.com:8765/smart-api/)(账号：admin@17smart.com；密码：654321)
 - 2、自己本地部署（很简单，详见下面[“快速部署”](#部署)）
 
 
@@ -140,6 +140,6 @@ db.mongo.dbName=smartAPI
 
 还在用Word管理接口文档吗？还在拼接URL测试吗？是时候和Word/Excel说再见了！让我们一起SMART~
 
-[http://www.179smart.com/smart-api/](http://www.179smart.com/smart-api/)(账号：admin@17smart.com；密码：654321)
+[http://www.179smart.com:8765/smart-api/](http://www.179smart.com:8765/smart-api/)(账号：admin@17smart.com；密码：654321)
 
 您也想一起smart吗？烦请[此处](https://github.com/Aresyi/smart-api/issues/2)告知。
