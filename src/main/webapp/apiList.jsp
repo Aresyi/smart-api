@@ -219,7 +219,7 @@
 							更新时间
 						</th>
 						<th width="5%">
-							录入人
+							更新人
 						</th>
 						<th width="15%">
 							操作
@@ -263,7 +263,7 @@
 								${tranb:longToDateString(obj.modifyTime) }
 							</td>
 							<td>
-								${obj.creater }&nbsp;
+								${obj.modifyer }&nbsp;
 							</td>
 							
 							<td>
